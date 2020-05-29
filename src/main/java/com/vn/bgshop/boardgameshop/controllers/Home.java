@@ -1,6 +1,7 @@
 package com.vn.bgshop.boardgameshop.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
@@ -30,4 +31,5 @@ public class Home {
     public String shopDetails() {
         return "user/views/shop-details";
     }
+
 }

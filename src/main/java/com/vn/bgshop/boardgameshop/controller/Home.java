@@ -35,5 +35,4 @@ public class Home {
     public String register() {
         return "user/account/register";
     }
-
 }

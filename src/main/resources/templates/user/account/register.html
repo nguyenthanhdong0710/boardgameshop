@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Css Styles -->
+    <div th:insert="~{/user/general::cssStyle}"></div>
+</head>
+<body>
+<header class="header" th:fragment="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="header__top__left">
+                        <ul>
+                            <li><i class="fa fa-envelope"></i> dongntph09224@gmail.com</li>
+                            <li>Free Shipping for all Order of $99</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="header__top__right">
+                        <div class="header__top__right__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                        </div>
+                        <div class="header__top__right__language">
+                            <img th:src="@{/user/img/language.png}" alt="">
+                            <div>English</div>
+                            <span class="arrow_carrot-down"></span>
+                            <ul>
+                                <li><a href="#">Spanis</a></li>
+                                <li><a href="#">English</a></li>
+                            </ul>
+                        </div>
+                        <div class="header__top__right__auth">
+                            <a data-toggle="modal" data-target="#modalLoginForm"><i class="fa fa-user"></i> Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <br>
+    <p class="text-center">
+        Join with us on facebook! <a
+            href="https://www.facebook.com/nguyenthanhdong0710"> DongPoppa board games shop </a>
+    </p>
+    <hr>
+
+
+    <div style=" background: #F3F6FA;">
+        <article class="card-body mx-auto col-sm-6" style="min-width: 400px;">
+            <h4 class="card-title mt-3 text-center">Create Account</h4>
+            <p class="text-center">Get started with your free account</p>
+            <form action="<%=request.getContextPath()%>/Security" method="post"
+                  enctype='multipart/form-data'>
+                <!-- Name -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+							<span class="input-group-text">&nbsp;<i class="fa fa-user"></i>&nbsp;
+							</span>
+                    </div>
+                    <input name="txtName" class="form-control" placeholder="Full name"
+                           type="text">
+                </div>
+                <!-- Email -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+							<span class="input-group-text"> &nbsp;<i class="fa fa-envelope"></i>
+							</span>
+                    </div>
+                    <input name="txtEmail" class="form-control"
+                           placeholder="Email address" type="email">
+                </div>
+                <!-- Phone -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+							<span class="input-group-text"> &nbsp;<i class="fa fa-phone"></i>&nbsp;
+							</span>
+                    </div>
+                    <input name="txtPhone" class="form-control"
+                           placeholder="Phone number" type="text">
+                </div>
+                <!-- Pass -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+							<span class="input-group-text"> &nbsp;<i class="fa fa-lock">&nbsp;</i>&nbsp;
+							</span>
+                    </div>
+                    <input name="txtPass" class="form-control"
+                           placeholder="Create password" id="pass1" type="password">
+                </div>
+                <!-- Pass CF -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+							<span class="input-group-text"> &nbsp;<i class="fa fa-lock">&nbsp;</i>&nbsp;
+							</span>
+                    </div>
+                    <input class="form-control" placeholder="Repeat password"
+                           id="pass2" type="password">
+                </div>
+                <!-- Get avatar -->
+                <div class="form-group input-group">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="customFile" name="userAvatar" accept="image/*" >
+                        <label class="custom-file-label" for="customFile" style="overflow: hidden">Choose your avatar</label>
+                    </div>
+                </div>
+                <input type="hidden" id="avaName" name="avatarFileName" > <br>
+                <!-- Register -->
+<div class="text-center"> <button type="submit" class="site-btn">REGISTER</button></div>
+
+                <!-- Login -->
+                <p class="text-center">
+                    <br> Have an account? <a
+                        th:href="@{/home}">Log In</a>
+                </p>
+            </form>
+        </article>
+    </div>
+    <!-- card.// -->
+</div>
+<!--container end.//-->
+<hr>
+<br>
+<footer th:insert="~{/user/general::footer}"></footer>
+
+<div th:insert="~{/user/general::jsPlugins}"></div>
+
+</body>
+</html>

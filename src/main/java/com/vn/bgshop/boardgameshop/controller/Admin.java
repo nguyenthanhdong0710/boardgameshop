@@ -11,6 +11,14 @@ public class Admin {
     public String admin() {
         return "admin/views/index";
     }
+    @RequestMapping("addgame")
+    public String insert() {
+        return "admin/views/insert";
+    }
+    @RequestMapping("allgame")
+    public String updateDelete() {
+        return "admin/views/updateDelete";
+    }
     @RequestMapping("login")
     public String adminLogin() {
         return "admin/views/authentication-login";

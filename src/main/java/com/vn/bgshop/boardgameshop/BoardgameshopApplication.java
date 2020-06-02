@@ -4,8 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-import java.util.Collections;
-
 @SpringBootApplication
 @ComponentScan("com.vn.bgshop")
 public class BoardgameshopApplication {
@@ -13,6 +11,6 @@ public class BoardgameshopApplication {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(BoardgameshopApplication.class);
         app.run(args);
-    }
 
+    }
 }

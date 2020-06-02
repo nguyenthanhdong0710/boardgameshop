@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- CSS Style -->
+    <div th:insert="~{/admin/general::cssStyle}"></div>
+</head>
+
+<body>
+
+<div th:insert="~{/admin/general::preloader}"></div>
+
+<div id="main-wrapper">
+    <header th:insert="~{/admin/general::header}"> </header>
+
+    <aside th:insert="~{/admin/general::aside}"></aside>
+
+        <div class="page-wrapper">
+
+            <div class="page-breadcrumb">
+                <div class="row">
+                    <div class="col-12 d-flex no-block align-items-center">
+                        <h4 class="page-title">Tables</h4>
+                        <div class="ml-auto text-right">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Library</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Basic Datatable</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">ID</th>
+                                            <th scope="col"></th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col" class="text-center">Price</th>
+                                            <th scope="col" class="text-center">Quantity</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        <tr>
+                                            <td><input name="txtId" type="hidden" value="${game.id}"></td>
+                                            <td>${game.id}</td>
+                                            <td><img style="width: 70px; height: 70px"
+                                                     src="https://via.placeholder.com/150" /></td>
+                                            <td>${game.name}</td>
+                                            <td><input name="txtPrice" class="form-control"
+                                                       placeholder="Price" type="number" min="1" step="any"
+                                                       value="${game.price}"></td>
+                                            <td><input name="txtQuantity" class="form-control"
+                                                       placeholder="Quantity" type="number" min="0"
+                                                       value="${game.quantity}"></td>
+                                            <td class="text-center"><button class="btn btn-dark"
+                                                                      data-toggle="modal" data-target="#myModal${game.id}"> <font
+                                                    color="white"><i class="fas fa-caret-down "></i></font>
+                                            </button></td>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-danger" type="submit"
+                                                        name="action" value="Delete${index}">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                        </tr>
+                                        <!-- The Modal-->
+                                        <div class="modal fade" id="myModal${game.id}">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <!-- Modal Header -->
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Change game infomation</h4>
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    <!-- Modal body -->
+                                                    <div class="modal-body">
+                                                        <div class="card-body">
+                                                            <div class="e-profile">
+                                                                <div class="row">
+                                                                    <div class="col-sm-6 d-flex justify-content-center">
+                                                                        <img
+                                                                                src="<%=request.getContextPath()%>/user/img/game_img/${game.img}"
+                                                                                alt="Logo" id="avatar"
+                                                                                style="width: 150px; height: 150px;">
+                                                                    </div>
+
+                                                                    <div class="col-sm-6">
+                                                                        <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">
+                                                                            <strong>${game.name}</strong>
+                                                                        </h4>
+                                                                        <br>
+                                                                        <!-- Categoreis-->
+                                                                        <select class="selectpicker" name="categories" multiple
+                                                                                style="height: 30px; width: 30px">
+
+                                                                            <option>[${cate.id}] - ${cate.name}</option>
+
+                                                                        </select> <br> <br>
+                                                                        <!-- Get avatar -->
+                                                                        <div class="custom-file">
+                                                                            <input type="file" class="custom-file-input"
+                                                                                   id="customFile" onchange="readURL(this);"
+                                                                                   name="gameImage${game.id}" accept="image/*"> <label
+                                                                                class="custom-file-label" for="customFile"
+                                                                                style="overflow: hidden;">${game.img}</label>
+                                                                        </div>
+                                                                        <input type="hidden" name="oldName" value="${game.img}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <!-- Game's name -->
+                                                                    <div class="col-sm-6">
+                                                                        <input name="txtName" class="form-control"
+                                                                               placeholder="Game's name" type="text"
+                                                                               value="${game.name}">
+                                                                    </div>
+                                                                    <!-- Publisher-->
+                                                                    <div class="col-sm-6">
+                                                                        <input name="txtPublic" class="form-control"
+                                                                               placeholder="Publisher" type="text"
+                                                                               value="${game.publisher}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <!-- num of player -->
+                                                                    <div class="col-sm-6">
+                                                                        <input name="txtNumPlayer" class="form-control"
+                                                                               placeholder="Number of players" type="text"
+                                                                               value="${game.numberPlayer}">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <!-- Best player quantity-->
+                                                                        <input name="txtBestNum" class="form-control"
+                                                                               placeholder="Best player quantity" type="text"
+                                                                               value="${game.numberBest}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <!-- Time to play-->
+                                                                    <div class="col-sm-6">
+                                                                        <input name="txtTime" class="form-control"
+                                                                               placeholder="Time to play" type="text"
+                                                                               value="${game.timeToPlay}">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <!-- Age limited-->
+                                                                        <input name="txtAge" class="form-control"
+                                                                               placeholder="Age limited" value="${game.ageLimited}"
+                                                                               type="text">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <!-- Rules-->
+                                                                    <div class="col-sm-12">
+														<textarea name="txtRule" class="form-control"
+                                                                  placeholder="Rules" style="resize: none; height: 100px">${game.rules}</textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Modal footer -->
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger"
+                                                                    data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- The Modal END-->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <footer th:insert="~{/admin/general::footer}"></footer>
+
+        </div>
+
+</div>
+
+<!-- JS Plugins -->
+<div th:insert="~{/admin/general::jsPlugins}"></div>
+
+</body>
+
+</html>

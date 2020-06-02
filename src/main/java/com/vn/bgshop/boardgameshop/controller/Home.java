@@ -11,6 +11,11 @@ public class Home {
         return "user/views/index";
     }
 
+    @RequestMapping("")
+    public String home1() {
+        return "user/views/index";
+    }
+
     @RequestMapping("contact")
     public String contact() {
         return "user/views/contact";
@@ -31,8 +36,11 @@ public class Home {
         return "user/views/shop-details";
     }
 
-    @RequestMapping("register")
-    public String register() {
-        return "user/account/register";
+
+
+    @RequestMapping("403")
+    public String error() {
+        return "admin/views/error-403";
     }
+
 }

@@ -25,7 +25,7 @@ public class User implements Serializable {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "avatar")
+    @Column(name = "avatar",columnDefinition = "nvarchar(255)")
     private String avatar;
 
     @Column(name = "is_del")

@@ -1,42 +1,47 @@
 package com.vn.bgshop.boardgameshop.service;
 
+import com.vn.bgshop.boardgameshop.entity.Game;
 import com.vn.bgshop.boardgameshop.entity.Role;
+import com.vn.bgshop.boardgameshop.repository.GameRepo;
 import com.vn.bgshop.boardgameshop.repository.RoleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 @Service
-public class RoleServiceImpl implements RoleService {
+public class GameServiceImpl implements GameService {
 
     @Autowired
-    private RoleRepo roleRepo;
+    private GameRepo gameRepo;
+
 
     @Override
-    public Role findByName(String name) {
+    public Game findByName(String name) {
         return null;
     }
 
     @Override
-    public List<Role> findAll() {
+    public List<Game> findAll() {
         return null;
     }
 
     @Override
-    public Role findById(int id) {
+    public Game findById(int id) {
         return null;
     }
 
     @Override
-    public void save(Role model) {
+    public void save(Game model) {
+
     }
 
     @Override
     public void remove(int id) {
+
     }
 
     @Override
-    public void update(int id, Role model) {
+    public void update(int id, Game model) {
+
     }
 }

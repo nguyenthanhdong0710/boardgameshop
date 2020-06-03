@@ -15,7 +15,7 @@ public class Category implements Serializable {
     @Column(name = "name",columnDefinition = "nvarchar(255)")
     private String name;
 
-    @Column(name = "decription",columnDefinition = "nvarchar(max)")
+    @Column(name = "decription",columnDefinition = "nvarchar(255)")
     private String decription;
 
     @ManyToMany(mappedBy = "games")
@@ -24,4 +24,35 @@ public class Category implements Serializable {
     public Category() {
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDecription() {
+        return decription;
+    }
+
+    public void setDecription(String decription) {
+        this.decription = decription;
+    }
+
+    public Set<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(Set<Game> games) {
+        this.games = games;
+    }
 }

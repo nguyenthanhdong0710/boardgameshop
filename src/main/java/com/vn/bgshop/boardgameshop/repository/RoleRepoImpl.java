@@ -1,17 +1,21 @@
-package com.vn.bgshop.boardgameshop.service;
+package com.vn.bgshop.boardgameshop.repository;
 
 import com.vn.bgshop.boardgameshop.entity.Role;
-import com.vn.bgshop.boardgameshop.repository.RoleRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.vn.bgshop.boardgameshop.entity.User;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.List;
 
-@Service
-public class RoleServiceImpl implements RoleService {
+@Repository
+@Transactional
+public class RoleRepoImpl implements RoleRepo{
 
-    @Autowired
-    private RoleRepo roleRepo;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public Role findByName(String name) {
@@ -30,13 +34,16 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void save(Role model) {
+
     }
 
     @Override
     public void remove(int id) {
+
     }
 
     @Override
     public void update(int id, Role model) {
+
     }
 }

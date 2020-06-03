@@ -34,7 +34,7 @@ public class Game implements Serializable {
     @Column(name = "publisher",columnDefinition = "nvarchar(255)")
     private String publisher;
 
-    @Column(name = "rules",columnDefinition = "nvarchar(max)")
+    @Column(name = "rules",columnDefinition = "nvarchar(255)")
     private String rules;
 
     @Column(name = "quantity")
@@ -71,4 +71,115 @@ public class Game implements Serializable {
     public Game() {
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getMinPlayer() {
+        return minPlayer;
+    }
+
+    public void setMinPlayer(int minPlayer) {
+        this.minPlayer = minPlayer;
+    }
+
+    public int getMaxPlayer() {
+        return maxPlayer;
+    }
+
+    public void setMaxPlayer(int maxPlayer) {
+        this.maxPlayer = maxPlayer;
+    }
+
+    public int getBestPlayerQuantity() {
+        return bestPlayerQuantity;
+    }
+
+    public void setBestPlayerQuantity(int bestPlayerQuantity) {
+        this.bestPlayerQuantity = bestPlayerQuantity;
+    }
+
+    public int getTimeToPlay() {
+        return timeToPlay;
+    }
+
+    public void setTimeToPlay(int timeToPlay) {
+        this.timeToPlay = timeToPlay;
+    }
+
+    public int getAgeLimited() {
+        return ageLimited;
+    }
+
+    public void setAgeLimited(int ageLimited) {
+        this.ageLimited = ageLimited;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public String getRules() {
+        return rules;
+    }
+
+    public void setRules(String rules) {
+        this.rules = rules;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
 }

@@ -1,12 +1,19 @@
 package com.vn.bgshop.boardgameshop.controller;
 
+import com.vn.bgshop.boardgameshop.service.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
 @RequestMapping("admin")
 public class Admin {
+
+    @Autowired
+    private UserServiceImpl userService;
+
     @RequestMapping("")
     public String admin() {
         return "admin/views/index";
@@ -18,6 +25,12 @@ public class Admin {
     @RequestMapping("allgame")
     public String updateDelete() {
         return "admin/views/updateDelete";
+    }
+
+    @RequestMapping("alluser")
+    public String allUser(ModelMap model) {
+        model.addAttribute("users",userService.findAll());
+        return "admin/views/setAdmin";
     }
     @RequestMapping("login")
     public String adminLogin() {

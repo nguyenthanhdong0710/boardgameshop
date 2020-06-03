@@ -54,7 +54,7 @@ public class Security {
         return "redirect:/";*//*
     }*/
 
-    @PostMapping("register")
+    @PostMapping(value = "register",produces = "application/x-www-form-urlencoded;charset=UTF-8")
     public String register(User user, @RequestParam("ava") MultipartFile part,@RequestParam("passwordConfirm") String passComfirm, ModelMap model) {
         try {
             if (userService.findByEmail(user.getEmail()) == null) {
@@ -68,7 +68,6 @@ public class Security {
                     Set<Role> roles = new HashSet<>();
                     roles.add(role);
                     user.setRoles(roles);
-
                     userService.save(user);
                     System.out.println(user);
 
@@ -76,7 +75,7 @@ public class Security {
                     OutputStream outStream = null;
                     byte[] avatar = null;
                     outStream = new FileOutputStream(new File(
-                            "E:\\OneDrive - Nguyen Sieu School\\X_POPPA's file_FPOLY Gakkuzai\\2020 2.Summer\\Block 1 - SOF102 - Java 5\\Assignment rerources\\USER_AVATAR\\"
+                            "E:\\OneDrive - Nguyen Sieu School\\Documents\\IntelliJProject\\boardgameshop\\src\\main\\resources\\static\\user\\img\\avatar\\"
                                     + avatarName));
                     InputStream userAvatar = part.getInputStream();
                     avatar = new byte[(int) part.getSize()];

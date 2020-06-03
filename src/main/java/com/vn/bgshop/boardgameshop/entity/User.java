@@ -13,10 +13,10 @@ public class User implements Serializable {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "user_name")
+    @Column(name = "user_name",columnDefinition = "nvarchar(255)")
     private String userName;
 
-    @Column(name = "email")
+    @Column(name = "email",unique = true)
     private String email;
 
     @Column(name = "pass")
@@ -125,6 +125,10 @@ public class User implements Serializable {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public boolean isUserOnly() {
+        return this.getRoles().contains(new Role(1,"ROLE_MEMBER"));
     }
 
     @Override

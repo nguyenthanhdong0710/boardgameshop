@@ -1,5 +1,8 @@
 package com.vn.bgshop.boardgameshop.entity;
 
+import com.vn.bgshop.boardgameshop.service.RoleServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -8,12 +11,13 @@ import java.util.Set;
 @Table(name = "users")
 public class User implements Serializable {
 
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "user_name",columnDefinition = "nvarchar(255)")
+    @Column(name = "user_name",columnDefinition = "nvarchar(100)")
     private String userName;
 
     @Column(name = "email",unique = true)
@@ -29,8 +33,10 @@ public class User implements Serializable {
     private String avatar;
 
     @Column(name = "is_del")
-    private boolean status;
+    private String status;
 
+    @Transient
+    private boolean isAdmin;
 
     /*
     *** @ManyToMany và @JoinTable xác định các thành phần tham gia vào liên kết Many to Many của 2 bảng User và Role.
@@ -54,7 +60,7 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String userName, String email, String password, String phone, String avatar, boolean status) {
+    public User(String userName, String email, String password, String phone, String avatar, String status) {
         this.userName = userName;
         this.email = email;
         this.password = password;
@@ -111,11 +117,11 @@ public class User implements Serializable {
         this.avatar = avatar;
     }
 
-    public boolean isStatus() {
+    public String isStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -127,8 +133,12 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
-    public boolean isUserOnly() {
-        return this.getRoles().contains(new Role(1,"ROLE_MEMBER"));
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 
     @Override

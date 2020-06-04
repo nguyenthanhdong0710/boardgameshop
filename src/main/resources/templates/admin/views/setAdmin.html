@@ -59,18 +59,28 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr  class="text-center" th:each="user : ${users}">
-                                        <td  class="text-center" th:text="${user.id}"></td>
+                                    <tr class="text-center" th:each="user : ${users}">
+                                        <td class="text-center" th:text="${user.id}"></td>
                                         <td class="text-center"><img style="width: 70px; height: 70px"
-                                                 th:src="@{/user/img/avatar/DEFAULT_AVATAR.png}"/></td>
+                                                                     th:src="@{/user/img/avatar/{avatar}(avatar=${user.getAvatar()})}"/>
+                                        </td>
                                         <td class="text-center" th:text="${user.userName}"></td>
                                         <td class="text-center" th:text="${user.getEmail()}"></td>
                                         <td class="text-center" th:text="${user.getPhone()}"></td>
                                         <td class="text-center">
-                                            <button class="btn btn-primary" th:if="${user.isUserOnly()}">set Admin
-                                            </button>
-                                            <button class="btn btn-danger" th:if="${!user.isUserOnly()}">Remove Admin
-                                            </button>
+                                            <form th:action="@{/admin/remove}" method="post">
+                                                <button class="btn btn-danger" type="submit" th:if="${user.isAdmin()}">
+                                                    Remove admin
+                                                </button>
+                                                <input type="hidden" name="id" th:value="${user.id}">
+                                            </form>
+                                            <form th:action="@{/admin/set}" method="post">
+                                                <button class="btn btn-primary" type="submit"
+                                                        th:if="${!user.isAdmin()}">
+                                                    Set admin
+                                                    <input type="hidden" name="id" th:value="${user.id}">
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                     </tbody>

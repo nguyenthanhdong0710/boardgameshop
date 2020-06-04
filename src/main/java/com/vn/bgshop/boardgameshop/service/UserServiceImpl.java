@@ -2,7 +2,6 @@ package com.vn.bgshop.boardgameshop.service;
 
 import com.vn.bgshop.boardgameshop.entity.User;
 import com.vn.bgshop.boardgameshop.repository.UserRepo;
-import com.vn.bgshop.boardgameshop.repository.UserRepoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

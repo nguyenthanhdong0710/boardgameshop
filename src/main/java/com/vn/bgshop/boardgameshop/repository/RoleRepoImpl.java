@@ -19,7 +19,9 @@ public class RoleRepoImpl implements RoleRepo{
 
     @Override
     public Role findByName(String name) {
-        return null;
+        String query = "select r from Role r where r.name ='"+name+"'";
+        TypedQuery<Role> roleTypedQuery = entityManager.createQuery(query, Role.class);
+        return roleTypedQuery.getResultList().isEmpty()?null:roleTypedQuery.getResultList().get(0);
     }
 
     @Override

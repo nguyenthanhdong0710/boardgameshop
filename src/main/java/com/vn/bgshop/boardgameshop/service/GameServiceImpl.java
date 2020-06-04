@@ -1,9 +1,7 @@
 package com.vn.bgshop.boardgameshop.service;
 
 import com.vn.bgshop.boardgameshop.entity.Game;
-import com.vn.bgshop.boardgameshop.entity.Role;
 import com.vn.bgshop.boardgameshop.repository.GameRepo;
-import com.vn.bgshop.boardgameshop.repository.RoleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +20,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public List<Game> findAll() {
-        return null;
+        return gameRepo.findAll();
     }
 
     @Override
@@ -32,7 +30,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void save(Game model) {
-
+        gameRepo.save(model);
     }
 
     @Override

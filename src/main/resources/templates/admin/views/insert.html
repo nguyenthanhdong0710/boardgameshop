@@ -34,68 +34,75 @@
                 </div>
             </div>
         </div>
+
         <div class="container-fluid">
+            <div class="alert alert-success" role="alert" th:if="${messSucc != null}" th:text="${messSucc}">
+            </div>
+            <div class="alert alert-danger" role="alert" th:if="${messFail != null}" th:text="${messFail}">
+            </div>
             <div class="row justify-content-center">
                 <div class="col-sm-7">
                     <div class="card">
-                        <form class="form-horizontal">
+                        <form class="form-horizontal"  enctype='multipart/form-data' th:action="@{/admin/addgame}" method="post" th:object="${game}">
                             <div class="card-body">
                                 <div class="form-group row">
-                                    <i class="mdi mdi-24px mdi-pound"></i>
+                           <!--         <i class="mdi mdi-24px mdi-pound"></i>
                                     <div class="col-md-2">
-                                        <input type="text" id="disabledTextInput" class="form-control"
+                                        <input type="text" class="form-control"
                                                placeholder="104" disabled>
                                     </div>
-                                    &emsp;&emsp;
+                                    &emsp;&emsp;-->
                                     <i class="mdi mdi-24px mdi-gamepad-variant"></i>
                                     <div class="col-md">
-                                        <input type="text" class="form-control" id="fname"
+                                        <input type="text" class="form-control" name="name" required
                                                placeholder="Game's name">
+                                    </div>
+                                    &emsp;&emsp;
+                                    <i class="mdi mdi-24px mdi-garage"></i>
+                                    <div class="col-md">
+                                        <input type="text" class="form-control" placeholder="Publisher" name="publisher" >
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <i class="mdi mdi-24px mdi-account-switch"></i>
                                     <div class="col-md">
-                                        <input type="text" class="form-control" placeholder="Number of player">
+                                        <input  type="number" min="0" step="1" class="form-control" placeholder="Min player quantity" name="minPlayer" >
+                                    </div>
+                                    &emsp; <i class="mdi mdi-24px mdi-chevron-right"></i>&emsp;
+                                    <div class="col-md">
+                                        <input  type="number" min="0" step="1"  class="form-control" placeholder="Max player quantity" name="maxPlayer" >
                                     </div>
                                     &emsp;&emsp;
                                     <i class="mdi mdi-24px mdi-account-star"></i>
                                     <div class="col-md">
-                                        <input type="text" class="form-control" placeholder="Best player quantity">
+                                        <input  type="number" min="0" step="1"  class="form-control" placeholder="Best player quantity" name="bestPlayerQuantity">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <i class="mdi mdi-24px mdi-timer-sand"></i>
                                     <div class="col-md">
-                                        <input type="text" class="form-control" id="email1"
-                                               placeholder="Time to play">
+                                        <input  class="form-control"
+                                               placeholder="From"  type="number" min="0" step="1" name="timeToPlayFrom" >
+                                    </div>
+                                    &emsp; <i class="mdi mdi-24px mdi-chevron-right"></i>&emsp;
+                                    <div class="col-md">
+                                        <input  class="form-control"  type="number" min="0" step="1" name="timeToPlayTo"
+                                               placeholder="To">
                                     </div>
                                     &emsp;&emsp;
                                     <i class="mdi mdi-24px mdi-baby"></i>
                                     <div class="col-md">
-                                        <input type="text" class="form-control" placeholder="Age limited">
+                                        <input  class="form-control"  type="number" min="0" step="1" placeholder="Age limited" name="ageLimited" >
                                     </div>
-                                    &emsp;&emsp;
-                                    <i class="mdi mdi-24px mdi-garage"></i>
-                                    <div class="col-md">
-                                        <input type="text" class="form-control" placeholder="Publisher">
-                                    </div>
+
                                 </div>
                                 <div class="form-group row">
                                     <i class="mdi mdi-24px mdi-tag-multiple"></i>
                                     <div class="col-md">
-                                        <select class="select2 form-control m-t-15" multiple="multiple"
+                                        <select class="select2 form-control m-t-15" multiple="multiple" name="categoriesFMS"
                                                 style="height: 36px;width: 100%;">
-                                            <optgroup label="Mountain Time Zone">
-                                                <option value="AZ">Arizona</option>
-                                                <option value="CO">Colorado</option>
-                                                <option value="ID">Idaho</option>
-                                                <option value="MT">Montana</option>
-                                                <option value="NE">Nebraska</option>
-                                                <option value="NM" selected>New Mexico</option>
-                                                <option value="ND">North Dakota</option>
-                                                <option value="UT">Utah</option>
-                                                <option value="WY">Wyoming</option>
+                                            <optgroup label="Choose game categories">
+                                                <option th:each="category : ${categories}"><span th:text="${category.getName()}"></span></option>
                                             </optgroup>
                                         </select>
                                     </div>
@@ -103,19 +110,19 @@
                                 <div class="form-group row">
                                     <i class="mdi mdi-24px mdi-script"></i>
                                     <div class="col-md">
-                                        <textarea class="form-control" rows="10"></textarea>
+                                        <textarea class="form-control" rows="10" name="rules"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <i class="mdi mdi-24px mdi-buffer"></i>
                                     <div class="col-sm">
-                                        <input type="number" class="form-control" min="0" step="1"
+                                        <input class="form-control" type="number" min="0" step="1" name="quantity" required
                                                placeholder="Quantity">
                                     </div>
                                     &emsp;&emsp;
                                     <i class="mdi mdi-24px mdi-cash-multiple"></i>
                                     <div class="col-sm">
-                                        <input type="number" class="form-control" min="0" step="any"
+                                        <input type="number" class="form-control" min="0" step="any" name="price" required
                                                placeholder="Price">
                                     </div>
                                 </div>
@@ -124,16 +131,15 @@
                                     <i class="mdi mdi-24px mdi-image"></i>
                                     <div class="col-md">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="validatedCustomFile"
-                                                   accept="image/*"  >
-                                            <label class="custom-file-label" for="validatedCustomFile" style="overflow: hidden">Choose
+                                            <input type="file" class="custom-file-input" name="img" accept="image/*" required>
+                                            <label class="custom-file-label" style="overflow: hidden">Choose
                                                 file...</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="border-top">
                                     <div class="card-body d-flex justify-content-center">
-                                        <button type="button" class="btn btn-primary ">Submit</button>
+                                        <button type="submit" class="btn btn-primary ">Submit</button>
                                     </div>
                                 </div>
                             </div>

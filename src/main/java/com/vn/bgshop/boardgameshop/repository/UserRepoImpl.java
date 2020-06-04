@@ -20,12 +20,7 @@ public class UserRepoImpl implements UserRepo{
     public User findByEmail(String email) {
         String query = "select u from User u where u.email ='"+email+"'";
         TypedQuery<User> userTypedQuery = entityManager.createQuery(query, User.class);
-        System.out.println(userTypedQuery.getResultList());
-        if(!userTypedQuery.getResultList().isEmpty()){
-            return userTypedQuery.getResultList().get(0);
-        }else{
-            return null;
-        }
+        return userTypedQuery.getResultList().isEmpty()?null:userTypedQuery.getResultList().get(0);
     }
 
     @Override

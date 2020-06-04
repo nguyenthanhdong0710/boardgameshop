@@ -8,7 +8,7 @@ import java.util.Set;
 @Table(name = "categories")
 public class Category implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -18,7 +18,7 @@ public class Category implements Serializable {
     @Column(name = "decription",columnDefinition = "nvarchar(255)")
     private String decription;
 
-    @ManyToMany(mappedBy = "games")
+    @ManyToMany(mappedBy = "categories")
     private Set<Game> games;
 
     public Category() {

@@ -1,9 +1,7 @@
 package com.vn.bgshop.boardgameshop.service;
 
 import com.vn.bgshop.boardgameshop.entity.Category;
-import com.vn.bgshop.boardgameshop.entity.Game;
 import com.vn.bgshop.boardgameshop.repository.CategoryRepo;
-import com.vn.bgshop.boardgameshop.repository.GameRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +14,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findByName(String name) {
-        return null;
+        return categoryRepo.findByName(name);
     }
 
     @Override
     public List<Category> findAll() {
-        return null;
+        return categoryRepo.findAll();
     }
 
     @Override

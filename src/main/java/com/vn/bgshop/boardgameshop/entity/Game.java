@@ -2,6 +2,7 @@ package com.vn.bgshop.boardgameshop.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Set;
 
 @Entity
@@ -9,7 +10,7 @@ import java.util.Set;
 public class Game implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -25,8 +26,11 @@ public class Game implements Serializable {
     @Column(name = "best_player_quantity")
     private int bestPlayerQuantity;
 
-    @Column(name = "time_play")
-    private int timeToPlay;
+    @Column(name = "time_play_from")
+    private int timeToPlayFrom;
+
+    @Column(name = "time_play_to")
+    private int timeToPlayTo;
 
     @Column(name = "age_limited")
     private int ageLimited;
@@ -47,7 +51,7 @@ public class Game implements Serializable {
     private String image;
 
     @Column(name = "is_del")
-    private boolean status;
+    private String status;
 
     /*
     *** @ManyToMany và @JoinTable xác định các thành phần tham gia vào liên kết Many to Many của 2 bảng User và Role.
@@ -65,8 +69,10 @@ public class Game implements Serializable {
             joinColumns = @JoinColumn(name = "game_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-
     private Set<Category> categories;
+
+    @Transient
+    private String[] categoriesFMS;
 
     public Game() {
     }
@@ -111,12 +117,24 @@ public class Game implements Serializable {
         this.bestPlayerQuantity = bestPlayerQuantity;
     }
 
-    public int getTimeToPlay() {
-        return timeToPlay;
+    public int getTimeToPlayFrom() {
+        return timeToPlayFrom;
     }
 
-    public void setTimeToPlay(int timeToPlay) {
-        this.timeToPlay = timeToPlay;
+    public void setTimeToPlayFrom(int timeToPlayFrom) {
+        this.timeToPlayFrom = timeToPlayFrom;
+    }
+
+    public int getTimeToPlayTo() {
+        return timeToPlayTo;
+    }
+
+    public void setTimeToPlayTo(int timeToPlayTo) {
+        this.timeToPlayTo = timeToPlayTo;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public int getAgeLimited() {
@@ -167,11 +185,11 @@ public class Game implements Serializable {
         this.image = image;
     }
 
-    public boolean isStatus() {
+    public String isStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -181,5 +199,35 @@ public class Game implements Serializable {
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
+    }
+
+    public String[] getCategoriesFMS() {
+        return categoriesFMS;
+    }
+
+    public void setCategoriesFMS(String[] categoriesFMS) {
+        this.categoriesFMS = categoriesFMS;
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", minPlayer=" + minPlayer +
+                ", maxPlayer=" + maxPlayer +
+                ", bestPlayerQuantity=" + bestPlayerQuantity +
+                ", timeToPlayFrom=" + timeToPlayFrom +
+                ", timeToPlayTo=" + timeToPlayTo +
+                ", ageLimited=" + ageLimited +
+                ", publisher='" + publisher + '\'' +
+                ", rules='" + rules + '\'' +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                ", image='" + image + '\'' +
+                ", status='" + status + '\'' +
+                ", categories=" + categories +
+                ", categoriesFMS=" + Arrays.toString(categoriesFMS) +
+                '}';
     }
 }

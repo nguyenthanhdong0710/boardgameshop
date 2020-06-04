@@ -36,8 +36,6 @@ public class Home {
         return "user/views/shop-details";
     }
 
-
-
     @RequestMapping("403")
     public String error() {
         return "admin/views/error-403";

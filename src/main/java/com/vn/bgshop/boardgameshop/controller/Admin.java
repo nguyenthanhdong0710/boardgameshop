@@ -1,10 +1,27 @@
 package com.vn.bgshop.boardgameshop.controller;
 
-import com.vn.bgshop.boardgameshop.service.UserServiceImpl;
+import com.vn.bgshop.boardgameshop.entity.Category;
+import com.vn.bgshop.boardgameshop.entity.Game;
+import com.vn.bgshop.boardgameshop.entity.Role;
+import com.vn.bgshop.boardgameshop.entity.User;
+import com.vn.bgshop.boardgameshop.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 @Controller
@@ -12,25 +29,108 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class Admin {
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private GameService gameService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @RequestMapping("")
+
     public String admin() {
         return "admin/views/index";
     }
-    @RequestMapping("addgame")
-    public String insert() {
+    @GetMapping("addgame")
+    public String insert(ModelMap model) {
+        model.addAttribute("game", new Game());
+        model.addAttribute("categories",categoryService.findAll());
+        return "admin/views/insert";
+    }
+
+    @PostMapping("addgame")
+    public String insert(Game game, @RequestParam("img") MultipartFile part, ModelMap model){
+        try {
+            String gameImage = part.getOriginalFilename();
+            game.setImage(gameImage);
+
+            String[] gameCategories = game.getCategoriesFMS();
+            Set<Category> categories = new HashSet<>();
+            for(String cateName : gameCategories){
+                Category cate = categoryService.findByName(cateName);
+                categories.add(cate);
+            }
+            game.setCategories(categories);
+            gameService.save(game);
+
+            //Xu ly copy anh
+            if(!gameImage.equalsIgnoreCase("DEFAULT_AVATAR.png")){
+                OutputStream outStream = null;
+                byte[] avatar = null;
+                outStream = new FileOutputStream(new File(
+                        "E:\\OneDrive - Nguyen Sieu School\\Documents\\IntelliJProject\\boardgameshop\\src\\main\\resources\\static\\admin\\assets\\images\\games\\"
+                                + gameImage));
+                InputStream userAvatar = part.getInputStream();
+                avatar = new byte[(int) part.getSize()];
+                int nRead;
+                while ((nRead = userAvatar.read(avatar, 0, avatar.length)) != -1) {
+                    outStream.write(avatar, 0, nRead);
+                }
+            }
+            model.addAttribute("messSucc","Insert game successfully!");
+            model.addAttribute("game", new Game());
+        }catch (Exception e){
+            e.printStackTrace();
+            model.addAttribute("messFail","Insert game failed!");
+            model.addAttribute("game", new Game());
+        }
         return "admin/views/insert";
     }
     @RequestMapping("allgame")
-    public String updateDelete() {
+    public String updateDelete(ModelMap model) {
+        model.addAttribute("games",gameService.findAll());
         return "admin/views/updateDelete";
     }
 
     @RequestMapping("alluser")
     public String allUser(ModelMap model) {
-        model.addAttribute("users",userService.findAll());
+        List<User> list = new ArrayList<>();
+        for(User user : userService.findAll()){
+            Set<Role> rolesTest = user.getRoles();
+            if(rolesTest.contains(roleService.findByName("ROLE_ADMIN"))) {
+                user.setAdmin(true);
+            }else {
+                user.setAdmin(false);
+            }
+            list.add(user);
+        }
+        model.addAttribute("users",list);
         return "admin/views/setAdmin";
+    }
+    @PostMapping("set")
+    public String setAdmin(int id) {
+        User user = userService.findById(id);
+        Role role = roleService.findByName("ROLE_ADMIN");
+        Set<Role> roles = user.getRoles();
+        roles.add(role);
+        user.setRoles(roles);
+        userService.save(user);
+        return "redirect:/admin/alluser";
+    }
+
+    @PostMapping("remove")
+    public String removeAdmin(int id) {
+        User user = userService.findById(id);
+        Role role = roleService.findByName("ROLE_ADMIN");
+        Set<Role> roles = user.getRoles();
+        roles.remove(role);
+        user.setRoles(roles);
+        userService.save(user);
+        return "redirect:/admin/alluser";
     }
     @RequestMapping("login")
     public String adminLogin() {

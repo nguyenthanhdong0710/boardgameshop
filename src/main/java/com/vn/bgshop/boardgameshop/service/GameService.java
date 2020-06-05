@@ -11,6 +11,8 @@ public interface GameService {
 
     List<Game> findAll();
 
+    List<Game> findAllDeleted();
+
     Game findById(int id);
 
     void save(Game model);

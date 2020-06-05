@@ -22,7 +22,7 @@
         <div class="page-breadcrumb">
             <div class="row">
                 <div class="col-12 d-flex no-block align-items-center">
-                    <h3 class="page-title">Add game</h3>
+                    <h3 class="page-title">Update game</h3>
                     <div class="ml-auto text-right">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
@@ -42,9 +42,10 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-sm-7">
-                    <div class="card">
-                        <form class="form-horizontal" enctype='multipart/form-data' th:action="@{/admin/addgame}" method="post" th:fragment="gameForm">
-                            <div class="card-body" th:fragment="gameForm">
+                    <div class="card" >
+                        <form class="form-horizontal" enctype='multipart/form-data' th:action="@{/admin/update-game}" method="post" th:object="${game}" >
+                            <div class="card-body">
+                                <input type="hidden" th:value="*{getId()}" name="id">
                                 <div class="form-group row">
                                     <!--         <i class="mdi mdi-24px mdi-pound"></i>
                                              <div class="col-md-2">
@@ -54,45 +55,46 @@
                                              &emsp;&emsp;-->
                                     <i class="mdi mdi-24px mdi-gamepad-variant"></i>
                                     <div class="col-md">
-                                        <input type="text" class="form-control" name="name" required
-                                               placeholder="game's name">
+                                        <input type="text" class="form-control" name="name" required th:value="*{getName()}"
+                                               placeholder="Game's name">
                                     </div>
                                     &emsp;&emsp;
                                     <i class="mdi mdi-24px mdi-garage"></i>
                                     <div class="col-md">
-                                        <input type="text" class="form-control" placeholder="Publisher" name="publisher"  >
+                                        <input type="text" class="form-control" placeholder="Publisher" name="publisher" th:value="*{getPublisher()}" >
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <i class="mdi mdi-24px mdi-account-switch"></i>
                                     <div class="col-md">
-                                        <input  type="number" min="0" step="1" class="form-control" placeholder="min" name="minPlayer"  >
-                                    </div><b class="d-flex align-items-center" style="color: darkgrey">Player</b>
+                                        <input  type="number" min="0" step="1" class="form-control" placeholder="Min player quantity" name="minPlayer" th:value="*{getMinPlayer()}" >
+                                    </div> <b class="d-flex align-items-center" style="color: darkgrey">Player</b>
                                     &emsp; <i class="mdi mdi-24px mdi-chevron-right"></i>&emsp;
                                     <div class="col-md">
-                                        <input  type="number" min="0" step="1"  class="form-control" placeholder="max" name="maxPlayer"  >
+                                        <input  type="number" min="0" step="1"  class="form-control" placeholder="Max player quantity" name="maxPlayer" th:value="*{getMaxPlayer()}" >
                                     </div><b class="d-flex align-items-center" style="color: darkgrey">Player</b>
                                     &emsp;&emsp;
                                     <i class="mdi mdi-24px mdi-account-star"></i>
                                     <div class="col-md">
-                                        <input  type="number" min="0" step="1"  class="form-control" placeholder="best quantity" name="bestPlayerQuantity"  >
-                                    </div><b class="d-flex align-items-center" style="color: darkgrey">Player</b>
+                                        <input  type="number" min="0" step="1"  class="form-control" placeholder="Best player quantity" name="bestPlayerQuantity" th:value="*{getBestPlayerQuantity()}" >
+                                    </div>
+                                        <b class="d-flex align-items-center" style="color: darkgrey">Player</b>
                                 </div>
                                 <div class="form-group row">
                                     <i class="mdi mdi-24px mdi-timer-sand"></i>
                                     <div class="col-md">
                                         <input  class="form-control"
-                                                placeholder="from"  type="number" min="0" step="1" name="timeToPlayFrom"  >
+                                                placeholder="From"  type="number" min="0" step="1" name="timeToPlayFrom"th:value="*{getTimeToPlayFrom()}"  >
                                     </div><b class="d-flex align-items-center" style="color: darkgrey">Mins&nbsp;&nbsp;</b>
                                     &emsp; <i class="mdi mdi-24px mdi-chevron-right"></i>&emsp;
                                     <div class="col-md">
-                                        <input  class="form-control"  type="number" min="0" step="1" name="timeToPlayTo"
-                                                placeholder="to">
+                                        <input  class="form-control"  type="number" min="0" step="1" name="timeToPlayTo" th:value="*{getTimeToPlayTo()}"
+                                                placeholder="To">
                                     </div><b class="d-flex align-items-center" style="color: darkgrey">Mins&nbsp;&nbsp;</b>
                                     &emsp;&emsp;
                                     <i class="mdi mdi-24px mdi-baby"></i>
                                     <div class="col-md">
-                                        <input  class="form-control"  type="number" min="0" step="1" placeholder="age limited" name="ageLimited">
+                                        <input  class="form-control"  type="number" min="0" step="1" placeholder="Age limited" name="ageLimited" th:value="*{getAgeLimited()}" >
                                     </div><b class="d-flex align-items-center" style="color: darkgrey">Above</b>
 
                                 </div>
@@ -100,9 +102,9 @@
                                     <i class="mdi mdi-24px mdi-tag-multiple"></i>
                                     <div class="col-md">
                                         <select class="select2 form-control m-t-15" multiple="multiple" name="categoriesFMS"
-                                                style="height: 36px;width: 100%;" >
+                                                style="height: 36px;width: 100%; " >
                                             <optgroup label="Choose game categories">
-                                                <option th:each="category : ${categories}">
+                                                <option th:each="category : ${categories}" th:selected="${game.getCategories().contains(category)}">
                                                     <span  th:text="${category.getName()}"></span>
                                                 </option>
                                             </optgroup>
@@ -112,20 +114,20 @@
                                 <div class="form-group row">
                                     <i class="mdi mdi-24px mdi-script"></i>
                                     <div class="col-md">
-                                        <textarea class="form-control" rows="10" name="rules" placeholder="rules" ></textarea>
+                                        <textarea class="form-control" rows="10" name="rules" ><th:block th:text="*{getRules()}"></th:block></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <i class="mdi mdi-24px mdi-buffer"></i>
                                     <div class="col-sm">
-                                        <input class="form-control" type="number" min="0" step="1" name="quantity" required
-                                               placeholder="quantity">
+                                        <input class="form-control" type="number" min="0" step="1" name="quantity" required th:value="*{getQuantity()}"
+                                               placeholder="Quantity">
                                     </div>
                                     &emsp;&emsp;
                                     <i class="mdi mdi-24px mdi-cash-multiple"></i>
                                     <div class="col-sm">
-                                        <input type="number" class="form-control" min="0" step="any" name="price" required
-                                               placeholder="price">
+                                        <input type="number" class="form-control" min="0" step="any" name="price" required th:value="*{getPrice()}"
+                                               placeholder="Price">
                                     </div><b class="d-flex align-items-center" style="color: darkgrey">$</b>
                                 </div>
 
@@ -133,8 +135,8 @@
                                     <i class="mdi mdi-24px mdi-image"></i>
                                     <div class="col-md">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" name="img" accept="image/*" required>
-                                            <label class="custom-file-label" style="overflow: hidden">Choose
+                                            <input type="file" class="custom-file-input" name="img" accept="image/*">
+                                            <label class="custom-file-label" style="overflow: hidden" th:text="*{getImage()}">Choose
                                                 file...</label>
                                         </div>
                                     </div>
@@ -148,16 +150,15 @@
                         </form>
                     </div>
                 </div>
+
             </div>
-
+            <footer th:insert="~{/admin/general::footer}"></footer>
         </div>
-        <footer th:insert="~{/admin/general::footer}"></footer>
     </div>
-</div>
 
-<!-- JS Plugins -->
-<div th:insert="~{/admin/general::jsPlugins}"></div>
-<div th:insert="~{/admin/general::jsPluginsForForm}"></div>
+    <!-- JS Plugins -->
+    <div th:insert="~{/admin/general::jsPlugins}"></div>
+    <div th:insert="~{/admin/general::jsPluginsForForm}"></div>
 
 </body>
 

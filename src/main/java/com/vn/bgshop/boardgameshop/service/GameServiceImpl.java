@@ -24,8 +24,13 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public List<Game> findAllDeleted() {
+        return gameRepo.findAllDeleted();
+    }
+
+    @Override
     public Game findById(int id) {
-        return null;
+        return gameRepo.findById(id);
     }
 
     @Override

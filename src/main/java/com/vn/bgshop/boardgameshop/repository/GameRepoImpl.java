@@ -22,16 +22,26 @@ public class GameRepoImpl implements GameRepo{
         return null;
     }
 
+
     @Override
     public List<Game> findAll() {
-        String query = "select g from Game g";
+        String query = "select g from Game g where g.status is null";
+        TypedQuery<Game> userTypedQuery = entityManager.createQuery(query, Game.class);
+        return userTypedQuery.getResultList();
+    }
+
+    @Override
+    public List<Game> findAllDeleted() {
+        String query = "select g from Game g where g.status is not null";
         TypedQuery<Game> userTypedQuery = entityManager.createQuery(query, Game.class);
         return userTypedQuery.getResultList();
     }
 
     @Override
     public Game findById(int id) {
-        return null;
+        String query = "select g from Game g where g.id ='"+id+"'";
+        TypedQuery<Game> gameTypedQuery = entityManager.createQuery(query, Game.class);
+        return gameTypedQuery.getResultList().isEmpty()?null:gameTypedQuery.getResultList().get(0);
     }
 
     @Override

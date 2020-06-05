@@ -8,20 +8,14 @@ import com.vn.bgshop.boardgameshop.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Controller
@@ -41,10 +35,10 @@ public class Admin {
     private CategoryService categoryService;
 
     @RequestMapping("")
-
     public String admin() {
         return "admin/views/index";
     }
+
     @GetMapping("addgame")
     public String insert(ModelMap model) {
         model.addAttribute("game", new Game());
@@ -68,19 +62,16 @@ public class Admin {
             gameService.save(game);
 
             //Xu ly copy anh
-            if(!gameImage.equalsIgnoreCase("DEFAULT_AVATAR.png")){
-                OutputStream outStream = null;
-                byte[] avatar = null;
-                outStream = new FileOutputStream(new File(
+                OutputStream outStream = new FileOutputStream(new File(
                         "E:\\OneDrive - Nguyen Sieu School\\Documents\\IntelliJProject\\boardgameshop\\src\\main\\resources\\static\\admin\\assets\\images\\games\\"
                                 + gameImage));
                 InputStream userAvatar = part.getInputStream();
-                avatar = new byte[(int) part.getSize()];
+                byte[] avatar = new byte[(int) part.getSize()];
                 int nRead;
                 while ((nRead = userAvatar.read(avatar, 0, avatar.length)) != -1) {
                     outStream.write(avatar, 0, nRead);
                 }
-            }
+
             model.addAttribute("messSucc","Insert game successfully!");
             model.addAttribute("game", new Game());
         }catch (Exception e){
@@ -90,10 +81,98 @@ public class Admin {
         }
         return "admin/views/insert";
     }
+
+    @GetMapping("updategame/{id}")
+    public String update(ModelMap model, @PathVariable int id) {
+        Game game = gameService.findById(id);
+        String[] gameCate = game.getCategoriesFMS();
+        if(game != null){
+            Set<Category> categories = game.getCategories();
+           categories.forEach((category -> {
+           }));
+            model.addAttribute("game",game );
+            model.addAttribute("categories",categoryService.findAll());
+            return "admin/views/update";
+        }else {
+            return "admin/views/error-403";
+        }
+    }
+
+    @PostMapping("update-game")
+    public String update(Game game, @RequestParam("img") MultipartFile part, ModelMap model){
+        try {
+            String gameImage = part.getOriginalFilename();
+            System.out.println(3);
+            System.out.println(gameImage);
+            System.out.println(1);
+            if(gameImage != null || gameImage.trim().length()!=0){
+                game.setImage(gameImage);
+                //Xu ly copy anh
+                OutputStream outStream = new FileOutputStream(new File(
+                        "E:\\OneDrive - Nguyen Sieu School\\Documents\\IntelliJProject\\boardgameshop\\src\\main\\resources\\static\\admin\\assets\\images\\games\\"
+                                + gameImage));
+                InputStream userAvatar = part.getInputStream();
+                byte[] avatar = new byte[(int) part.getSize()];
+                int nRead;
+                while ((nRead = userAvatar.read(avatar, 0, avatar.length)) != -1) {
+                    outStream.write(avatar, 0, nRead);
+                }
+            }else{
+                game.setImage(gameService.findById(game.getId()).getImage());
+            }
+            String[] gameCategories = game.getCategoriesFMS();
+            Set<Category> categories = new HashSet<>();
+            for(String cateName : gameCategories){
+                Category cate = categoryService.findByName(cateName);
+                categories.add(cate);
+            }
+            game.setCategories(categories);
+            gameService.save(game);
+            model.addAttribute("messSucc","Update game successfully!");
+            model.addAttribute("game", new Game());
+        }catch (Exception e){
+            e.printStackTrace();
+            model.addAttribute("messFail","Update game failed!");
+            model.addAttribute("game", new Game());
+        }
+        return "admin/views/update";
+    }
+
+    @PostMapping("quickupdate/{id}")
+    public String quickUpdate(Game g, @PathVariable int id) {
+        Game game = gameService.findById(id);
+        game.setQuantity(g.getQuantity());
+        game.setPrice(g.getPrice());
+        gameService.save(game);
+        return "redirect:/admin/allgame";
+    }
+
+    @PostMapping("deletegame/{id}")
+    public String deleteGame(@PathVariable int id) {
+        Game game = gameService.findById(id);
+        game.setStatus(String.valueOf(new Date()));
+        gameService.save(game);
+        return "redirect:/admin/allgame";
+    }
+
     @RequestMapping("allgame")
     public String updateDelete(ModelMap model) {
         model.addAttribute("games",gameService.findAll());
-        return "admin/views/updateDelete";
+        return "admin/views/allgame";
+    }
+    @RequestMapping("all-deleted-game")
+    public String allDeletedGame(ModelMap model) {
+        model.addAttribute("games",gameService.findAllDeleted());
+        model.addAttribute("isDelete", "Deleted");
+        return "admin/views/allgame";
+    }
+
+    @RequestMapping("restore/{id}")
+    public String restore(@PathVariable int id) {
+        Game game = gameService.findById(id);
+        game.setStatus(null);
+        gameService.save(game);
+        return "redirect:/admin/all-deleted-game";
     }
 
     @RequestMapping("alluser")
@@ -111,6 +190,7 @@ public class Admin {
         model.addAttribute("users",list);
         return "admin/views/setAdmin";
     }
+
     @PostMapping("set")
     public String setAdmin(int id) {
         User user = userService.findById(id);
@@ -132,6 +212,7 @@ public class Admin {
         userService.save(user);
         return "redirect:/admin/alluser";
     }
+
     @RequestMapping("login")
     public String adminLogin() {
         return "admin/views/authentication-login";

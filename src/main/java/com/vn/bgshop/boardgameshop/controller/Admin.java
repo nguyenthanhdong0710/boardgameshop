@@ -71,7 +71,6 @@ public class Admin {
                 while ((nRead = userAvatar.read(avatar, 0, avatar.length)) != -1) {
                     outStream.write(avatar, 0, nRead);
                 }
-
             model.addAttribute("messSucc","Insert game successfully!");
             model.addAttribute("game", new Game());
         }catch (Exception e){

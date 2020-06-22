@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Admin | Orders</title>
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/admin/assets/images/favicon.png}">
+    <!-- CSS Style -->
+    <div th:insert="~{/admin/general::cssStyle}"></div>
+
+</head>
+
+<body>
+
+<div th:insert="~{/admin/general::preloader}"></div>
+
+<div id="main-wrapper">
+    <header th:insert="~{/admin/general::header}"></header>
+
+    <aside th:insert="~{/admin/general::aside}"></aside>
+
+    <div class="page-wrapper">
+
+        <div class="page-breadcrumb">
+            <div class="row">
+                <div class="col-12 d-flex no-block align-items-center">
+                    <h4 class="page-title">Tables</h4>
+                    <div class="ml-auto text-right">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">All order</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Basic Datatable</h5>
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="datatable">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" class="text-center">ID</th>
+                                        <th scope="col" class="text-center">Sale date</th>
+                                        <th scope="col" class="text-center">Customer</th>
+                                        <th scope="col" class="text-center">Total</th>
+                                        <th scope="col" class="text-center">Status</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="text-center" th:each="order : ${orders}">
+                                        <td class="text-center" th:text="${order.getId()}"></td>
+                                        <td class="text-center" th:text="${order.getSaleDate()}"></td>
+                                        <td class="text-center"><a data-toggle="modal" th:href="'#'+${order.getUser().getPhone()}" th:text="${order.getUser().getEmail()}"></a></td>
+                                        <td class="text-center" th:text="${order.getTotal()}"></td>
+                                        <td class="text-center" th:if="${changeStatus == null}" th:text="${order.getOrderStatus().getDecription()}"></td>
+                                        <td class="text-center" th:if="${changeStatus != null}">
+                                            <a class="btn btn-cyan" th:href="@{/admin/change-status(changeStatus=${changeStatus},id=${order.getId()})}" th:text="${changeStatus}" style="color: white;"></a>
+                                            <a th:if="${changeStatus == 'Accept return'}" class="btn btn-danger" th:href="@{/admin/change-status(changeStatus='denied',id=${order.getId()})}" th:text="Denied" style="color: white;"></a>
+                                        </td>
+                                        <td class="text-center"><a data-toggle="modal" th:href="'#'+${order.getId()}">Show more</a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer th:insert="~{/admin/general::footer}"></footer>
+    </div>
+</div>
+
+<div class="modal fade" th:each="order : ${orders}" th:id="${order.getId()}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                Order detail
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="orderDetail : ${order.getOrderDetails()}">
+                        <td><img style="height: 50px; width: auto;" th:src="@{/user/img/games/{gameImg}(gameImg=${orderDetail.getGame().getImage()})}">
+                        </td>
+                        <td th:text="${orderDetail.getGame().getName()}"></td>
+                        <td th:text="${orderDetail.getPrice()}"></td>
+                        <td th:text="${orderDetail.getQuantity()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+            </div>
+        </div> <!--end modal content-->
+    </div>
+</div>
+
+
+<div class="modal fade" th:each="order : ${orders}" th:id="${order.getUser().getPhone()}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                Customer information
+            </div>
+            <div class="modal-body">
+               <label>Full name: &nbsp;</label><span th:text="${order.getUser().getUserName()}"></span><br>
+                <label>Email: &nbsp;</label><span th:text="${order.getUser().getEmail()}"></span><br>
+                <label>Phone: &nbsp;</label><span th:text="${order.getUser().getPhone()}"></span><br>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+            </div>
+        </div> <!--end modal content-->
+    </div>
+</div>
+<!-- JS Plugins -->
+<div th:insert="~{/admin/general::jsPlugins}"></div>
+
+</body>
+
+</html>

@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <title>Admin | Games</title>
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/admin/assets/images/favicon.png}">
     <!-- CSS Style -->
     <div th:insert="~{/admin/general::cssStyle}"></div>
 </head>
@@ -46,6 +48,7 @@
                         <form class="form-horizontal" enctype='multipart/form-data' th:action="@{/admin/update-game}" method="post" th:object="${game}" >
                             <div class="card-body">
                                 <input type="hidden" th:value="*{getId()}" name="id">
+                                <input type="hidden" th:value="*{getImage()}" name="image">
                                 <div class="form-group row">
                                     <!--         <i class="mdi mdi-24px mdi-pound"></i>
                                              <div class="col-md-2">
@@ -136,11 +139,29 @@
                                     <div class="col-md">
                                         <div class="custom-file">
                                             <input type="file" class="custom-file-input" name="img" accept="image/*">
-                                            <label class="custom-file-label" style="overflow: hidden" th:text="*{getImage()}">Choose
+                                            <label class="custom-file-label"  style="overflow: hidden" th:text="*{getImage()}">Choose
                                                 file...</label>
                                         </div>
                                     </div>
                                 </div>
+                                <script>
+                                    function readURL(input) {
+                                        if (input.files && input.files[0]) {
+                                            var reader = new FileReader();
+                                            reader.onload = function(e) {
+                                                $('#blah').attr('src', e.target.result);
+                                            }
+                                            reader.readAsDataURL(input.files[0]);
+                                        }
+                                    }
+                                    $("#imgInp").change(function() {
+                                        readURL(this);
+                                    });
+                                </script>
+                                <!--<form id="form1" runat="server">
+                                    <input type='file' id="imgInp" />
+                                    <img id="blah" src="#" alt="your image" />
+                                </form>-->
                                 <div class="border-top">
                                     <div class="card-body d-flex justify-content-center">
                                         <button type="submit" class="btn btn-primary ">Submit</button>
@@ -157,9 +178,8 @@
     </div>
 
     <!-- JS Plugins -->
-
-    <div th:insert="~{/admin/general::jsPluginsForForm}"></div>
     <div th:insert="~{/admin/general::jsPlugins}"></div>
+    </div>
 </body>
 
 </html>

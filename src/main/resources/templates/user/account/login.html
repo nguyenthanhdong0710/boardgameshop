@@ -15,16 +15,18 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form th:action="@{/login}" method="post">
+            <form th:action="@{/j_spring_security_check}" method="post">
             <div class="modal-body mx-3">
+                <div class="alert alert-danger" role="alert" th:if="${messFail != null}" th:text="${messFail}">
+                </div>
                 <div class="md-form mb-5">
                     <label data-error="wrong" data-success="right">Your email</label>
-                    <input type="email" name="email" class="form-control validate"  required placeholder="example@domain.com">
+                    <input type="email" name="email" id="email" class="form-control validate"  required placeholder="example@domain.com">
                 </div>
 
                 <div class="md-form mb-4">
                     <label data-error="wrong" data-success="right" >Your password</label>
-                    <input type="password" name="password" class="form-control validate" required placeholder="***">
+                    <input type="password" name="password" id="password" class="form-control validate" required placeholder="***">
                 </div>
                 <!-- Material unchecked -->
                 <div class="form-check">

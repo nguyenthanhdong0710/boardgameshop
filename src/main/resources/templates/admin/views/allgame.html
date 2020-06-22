@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <title>Admin | Games</title>
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/admin/assets/images/favicon.png}">
     <!-- CSS Style -->
     <div th:insert="~{/admin/general::cssStyle}"></div>
 </head>
@@ -22,34 +24,30 @@
     <aside th:insert="~{/admin/general::aside}"></aside>
 
     <div class="page-wrapper">
-
         <div class="page-breadcrumb">
             <div class="row">
                 <div class="col-12 d-flex no-block align-items-center">
-                    <h4 class="page-title">Tables</h4>
+                    <h4 class="page-title">All game</h4>
                     <div class="ml-auto text-right">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Library</li>
+                                <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">All game</li>
                             </ol>
                         </nav>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Basic Datatable</h5>
                             <div class="table-responsive">
-                                <table class="table table-striped">
+                                <table class="table table-striped" id="datatable">
                                     <thead>
                                     <tr>
-
                                         <th scope="col">ID</th>
                                         <th scope="col"></th>
                                         <th scope="col">Product Name</th>
@@ -65,7 +63,7 @@
                                         <form th:action="@{/admin/quickupdate/{id}(id=${game.getId()})}" method="post">
                                             <td th:text="${game.getId()}"></td>
                                             <td><img style="width: 70px; height: 70px"
-                                                     th:src="@{/admin/assets/images/games/{gameImg}(gameImg=${game.getImage()})}"/>
+                                                     th:src="@{/user/img/games/{gameImg}(gameImg=${game.getImage()})}"/>
                                             </td>
                                             <td th:text="${game.getName()}"></td>
                                             <td><input name="price" class="form-control"
@@ -98,29 +96,21 @@
                                             </button>
                                         </td>
                                     </form>
-
-
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
-
         <footer th:insert="~{/admin/general::footer}"></footer>
-
     </div>
-
 </div>
-
 <!-- JS Plugins -->
 <div th:insert="~{/admin/general::jsPlugins}"></div>
-<div th:insert="~{/admin/general::jsPluginsForForm}"></div>
+
 </body>
 
 </html>

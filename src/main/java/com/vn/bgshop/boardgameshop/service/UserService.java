@@ -11,6 +11,8 @@ public interface UserService {
 
     List<User> findAll();
 
+    List<User> findByRole(String roleName);
+
     User findById(int id);
 
     void save(User model);

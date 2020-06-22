@@ -1,5 +1,11 @@
 package com.vn.bgshop.boardgameshop.entity;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Store;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -7,6 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "games")
+@Indexed
 public class Game implements Serializable {
 
     @Id
@@ -14,6 +21,7 @@ public class Game implements Serializable {
     @Column(name = "id")
     private int id;
 
+    @Field(index = Index.YES,analyze=Analyze.NO, store=Store.NO)
     @Column(name = "name",columnDefinition = "nvarchar(255)")
     private String name;
 
@@ -35,6 +43,7 @@ public class Game implements Serializable {
     @Column(name = "age_limited")
     private int ageLimited;
 
+    @Field(index=Index.YES, analyze=Analyze.NO, store=Store.NO)
     @Column(name = "publisher",columnDefinition = "nvarchar(255)")
     private String publisher;
 
@@ -45,7 +54,7 @@ public class Game implements Serializable {
     private int quantity;
 
     @Column(name = "price")
-    private int price;
+    private double price;
 
     @Column(name = "image",columnDefinition = "nvarchar(255)")
     private String image;
@@ -53,16 +62,6 @@ public class Game implements Serializable {
     @Column(name = "is_del")
     private String status;
 
-    /*
-    *** @ManyToMany và @JoinTable xác định các thành phần tham gia vào liên kết Many to Many của 2 bảng User và Role.
-        *** name: Tên của table trung gian
-        *** joinColumns: Tên khóa chính của bảng này mà sẽ là khóa ngoại của bảng trung gian
-        *** inverseJoinColumns: Tên khóa chính của bảng còn lại mà sẽ là khóa ngoại của bảng trung gian
-    */
-
-    /*This happens because you have a collection in your entity, and that collection has one or more items which are
-    not present in the database. By specifying the above options you tell hibernate to save them to the database when
-    saving their parent.*/
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "category_game",
@@ -70,6 +69,13 @@ public class Game implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private Set<Category> categories;
+
+    @OneToMany(mappedBy = "game")
+    private Set<OrderDetail> orderDetails;
+
+    @OneToMany(mappedBy = "game")
+    private Set<CartDetail> cartDetails;
+
 
     @Transient
     private String[] categoriesFMS;
@@ -169,11 +175,11 @@ public class Game implements Serializable {
         this.quantity = quantity;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -205,6 +211,15 @@ public class Game implements Serializable {
         return categoriesFMS;
     }
 
+    public Set<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(Set<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
+
+
     public void setCategoriesFMS(String[] categoriesFMS) {
         this.categoriesFMS = categoriesFMS;
     }
@@ -226,8 +241,6 @@ public class Game implements Serializable {
                 ", price=" + price +
                 ", image='" + image + '\'' +
                 ", status='" + status + '\'' +
-                ", categories=" + categories +
-                ", categoriesFMS=" + Arrays.toString(categoriesFMS) +
                 '}';
     }
 }

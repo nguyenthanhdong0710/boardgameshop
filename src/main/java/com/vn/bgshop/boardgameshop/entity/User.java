@@ -1,6 +1,6 @@
 package com.vn.bgshop.boardgameshop.entity;
 
-import com.vn.bgshop.boardgameshop.service.RoleServiceImpl;
+import com.vn.bgshop.boardgameshop.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
@@ -38,27 +38,35 @@ public class User implements Serializable {
     @Transient
     private boolean isAdmin;
 
-    /*
-    *** @ManyToMany và @JoinTable xác định các thành phần tham gia vào liên kết Many to Many của 2 bảng User và Role.
-        *** name: Tên của table trung gian
-        *** joinColumns: Tên khóa chính của bảng này mà sẽ là khóa ngoại của bảng trung gian
-        *** inverseJoinColumns: Tên khóa chính của bảng còn lại mà sẽ là khóa ngoại của bảng trung gian
-    */
-
-    /*This happens because you have a collection in your entity, and that collection has one or more items which are
-    not present in the database. By specifying the above options you tell hibernate to save them to the database when
-    saving their parent.*/
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-
     private Set<Role> roles;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Order> orders;
+
+    @OneToMany(mappedBy = "user")
+    private Set<CartDetail> cartDetails;
 
     public User() {
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
+    }
+
 
     public User(String userName, String email, String password, String phone, String avatar, String status) {
         this.userName = userName;
@@ -68,6 +76,7 @@ public class User implements Serializable {
         this.avatar = avatar;
         this.status = status;
     }
+
 
     public int getId() {
         return id;
@@ -150,7 +159,8 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
                 ", avatar='" + avatar + '\'' +
-                ", status=" + status +
+                ", status='" + status + '\'' +
+                ", isAdmin=" + isAdmin +
                 ", roles=" + roles +
                 '}';
     }

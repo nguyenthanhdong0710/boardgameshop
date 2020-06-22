@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-    <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 
     <div th:fragment="cssStyle">
         <!-- Google Font -->
-        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap"
+              rel="stylesheet">
         <link rel="stylesheet" th:href="@{/user/css/bootstrap.min.css}" type="text/css">
         <link rel="stylesheet" th:href="@{/user/css/font-awesome.min.css}" type="text/css">
         <link rel="stylesheet" th:href="@{/user/css/fontawesome.min.css}" type="text/css">
@@ -23,42 +24,72 @@
 <header class="header" th:fragment="header">
     <div class="header__top">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    <div class="header__top__left">
-                        <ul>
-                            <li><i class="fa fa-envelope"></i> dongntph09224@gmail.com</li>
-                            <li>Free Shipping for all Order of $99</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="header__top__right">
-                        <div class="header__top__right__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-linkedin"></i></a>
-                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
-                        </div>
-                        <div class="header__top__right__language">
-                            <img th:src="@{/user/img/language.png}" alt="">
-                            <div>English</div>
-                            <span class="arrow_carrot-down"></span>
-                            <ul>
-                                <li><a href="#">Spanis</a></li>
-                                <li><a href="#">English</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="header__top__right__auth">
-                            <a data-toggle="modal" data-target="#modalLoginForm" ><i class="fa fa-user"></i> Login</a>
-                        </div>
-
-                    </div>
-                </div>
+    <nav class="navbar navbar-expand-lg bg-light-info">
+        <div class="col-lg-6 col-md-6">
+            <div class="header__top__left">
+                <ul>
+                    <li><i class="fa fa-envelope"></i> dongntph09224@gmail.com</li>
+                    <li>Free Shipping for all Order of $99</li>
+                </ul>
             </div>
         </div>
-    </div>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <div class="header__top__right__social">
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+                <a href="#"><i class="fa fa-linkedin"></i></a>
+                <a href="#"><i class="fa fa-pinterest-p"></i></a>
+            </div>
+            <div class="header__top__right__language">
+                <img th:src="@{/user/img/language.png}" alt="">
+                <div>English</div>
+                <span class="arrow_carrot-down"></span>
+                <ul>
+                    <li><a href="#">Spanis</a></li>
+                    <li><a href="#">English</a></li>
+                </ul>
+            </div>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a data-toggle="modal" data-target="#modalLoginForm" th:if="${loginedUser == null}">
+                        <i class="fa fa-user"></i> Login
+                    </a>
+                </li>
+
+                <img th:src="@{/user/img/avatar/{avatar}(avatar=${loginedUser.getAvatar()})}"   alt="Logo" class="rounded-circle" style="width: 35px; height: 35px;" th:if="${loginedUser != null}">
+                  <li class="nav-item dropdown" th:if="${loginedUser != null}">
+
+                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" style="color: black">
+                         <span th:text="${loginedUser.getUserName()}" ></span>
+                     </a>
+                     <div class="dropdown-menu">
+                         <a class="dropdown-item" th:if="${loginedUser.isAdmin()}" th:href="@{/admin}">
+                             <i class="fa fa-user-cog"></i>&nbsp;&nbsp;Admin
+                         </a>
+                         <a class="dropdown-item" th:href="@{/edit-information/{tab-name}(tab-name='basic-infomation')}">
+                             <i class="fa fa-user"></i>&nbsp;&nbsp;Edit infomation
+                         </a>
+                         <a class="dropdown-item" th:href="@{/edit-information/{tab-name}(tab-name='change-password')}">
+                             <i class="fa fa-lock"></i>&nbsp;&nbsp;Change password
+                         </a>
+                         <a class="dropdown-item" th:href="@{/edit-information/{tab-name}(tab-name='oder-history')}">
+                             <i class="fa fa-history"></i>&nbsp;&nbsp;Oder history
+                         </a>
+                         <a class="dropdown-item" th:href="@{/edit-information/{tab-name}(tab-name='processing-order')}">
+                             <i class="fa fa-file"></i>&nbsp;&nbsp;Processing order
+                         </a>
+                         <a class="dropdown-divider"></a>
+                         <a class="dropdown-item" th:href="@{/logout}">
+                             <i class="fa fa-sign-out">&nbsp;&nbsp;</i>Logout
+                         </a>
+                     </div>
+                 </li>
+            </ul>
+        </div>
+    </nav>
+</div></div>
+
     <div class="container">
         <div class="row">
             <div class="col-lg-3">
@@ -71,23 +102,18 @@
                     <ul>
                         <li><a th:href="@{/home}">Home</a></li>
                         <li><a th:href="@{/shop}">Shop</a></li>
-                        <li><a href="#">Pages</a>
-                            <ul class="header__menu__dropdown">
-                                <li><a th:href="@{/shop-details}">Shop Details</a></li>
-                                <li><a th:href="@{/cart}">Shoping Cart</a></li>
-                            </ul>
-                        </li>
-
+                        <li><a th:href="@{/shop-details}">Details</a></li>
+                        <li th:if="${loginedUser != null}"><a th:href="@{/cart}">Cart</a></li>
                         <li><a th:href="@{/contact}">Contact</a></li>
-                        <li><a th:href="@{/register}">register</a></li>
+                        <li th:if="${loginedUser == null}"><a th:href="@{/register}">Register</a></li>
                     </ul>
                 </nav>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3" th:if="${loginedUser != null}">
                 <div class="header__cart">
                     <ul>
                         <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                        <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                        <li><a th:href="@{/cart}"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                     </ul>
                     <div class="header__cart__price">item: <span>$150.00</span></div>
                 </div>
@@ -99,6 +125,7 @@
     </div>
     <!-- Login modal-->
     <div th:insert="~{/user/account/login::modalLoginForm}"></div>
+
 </header>
 <!-- Header Section End -->
 
@@ -111,32 +138,18 @@
                 <div class="hero__categories">
                     <div class="hero__categories__all">
                         <i class="fa fa-bars"></i>
-                        <span>All departments</span>
+                        <span>All Categories</span>
                     </div>
                     <ul>
-                        <li><a href="#">Fresh Meat</a></li>
-                        <li><a href="#">Vegetables</a></li>
-                        <li><a href="#">Fruit & Nut Gifts</a></li>
-                        <li><a href="#">Fresh Berries</a></li>
-                        <li><a href="#">Ocean Foods</a></li>
-                        <li><a href="#">Butter & Eggs</a></li>
-                        <li><a href="#">Fastfood</a></li>
-                        <li><a href="#">Fresh Onion</a></li>
-                        <li><a href="#">Papayaya & Crisps</a></li>
-                        <li><a href="#">Oatmeal</a></li>
-                        <li><a href="#">Fresh Bananas</a></li>
+                        <li th:each="category : ${categories}"><a href="#" th:text="${category.getName()}"></a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-9">
                 <div class="hero__search">
                     <div class="hero__search__form">
-                        <form action="#">
-                            <div class="hero__search__categories">
-                                All Categories
-                                <span class="arrow_carrot-down"></span>
-                            </div>
-                            <input type="text" placeholder="What do yo u need?">
+                        <form th:action="@{/search}" method="get">
+                            <input type="text" placeholder="What do you need?" name="key-words">
                             <button type="submit" class="site-btn">SEARCH</button>
                         </form>
                     </div>
@@ -158,7 +171,7 @@
 
 
 <!-- Footer Section Begin -->
-<footer class="footer spad"  th:fragment="footer">
+<footer class="footer spad" th:fragment="footer">
     <div class="container">
         <div class="row">
             <div class="col-lg-3 col-md-6 col-sm-6">
@@ -217,6 +230,7 @@
 
 <!-- Js Plugins -->
 <div th:fragment="jsPlugins">
+
     <script th:src="@{/user/js/jquery-3.3.1.min.js}"></script>
     <script th:src="@{/user/js/bootstrap.min.js}"></script>
     <script th:src="@{/user/js/jquery.nice-select.min.js}"></script>
@@ -226,6 +240,7 @@
     <script th:src="@{/user/js/owl.carousel.min.js}"></script>
     <script th:src="@{/user/js/main.js}"></script>
     <script th:src="@{/user/js/userStaff.js}"></script>
+    <script th:if="${isLogin == false}" >$('#modalLoginForm').modal('show');</script>
 </div>
 
 </body>

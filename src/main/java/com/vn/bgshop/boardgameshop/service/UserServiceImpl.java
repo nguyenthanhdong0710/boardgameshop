@@ -24,6 +24,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findByRole(String roleName) {
+        return userRepo.findByRole(roleName);
+    }
+
+    @Override
     public User findById(int id) {
         return userRepo.findById(id);
     }
@@ -40,6 +45,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(int id, User model) {
-
+        userRepo.update(id,model);
     }
 }

@@ -1,5 +1,7 @@
 package com.vn.bgshop.boardgameshop.controller;
 
+import com.vn.bgshop.boardgameshop.entity.Category;
+import com.vn.bgshop.boardgameshop.entity.Game;
 import com.vn.bgshop.boardgameshop.entity.Role;
 import com.vn.bgshop.boardgameshop.entity.User;
 import com.vn.bgshop.boardgameshop.service.RoleService;
@@ -8,19 +10,26 @@ import com.vn.bgshop.boardgameshop.service.UserService;
 import com.vn.bgshop.boardgameshop.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -33,16 +42,22 @@ public class Security {
     @Autowired
     private RoleService roleService;
 
-/*    @PostMapping("login")
-    public String login(HttpSession session, User user,ModelMap model) {
-        User loginUser = userService.findByEmail(user.getEmail());
-        if(loginUser != null){
-            session.setAttribute("LOGINUSER",loginUser);
-        }else{
-            model.addAttribute("mess","Login failed! Your email or your password is incorrect!");
+    @GetMapping("home/login")
+    public String loginHome(ModelMap model, HttpSession session, @ModelAttribute("loginFail") String loginFail) {
+        model.addAttribute("isLogin", false);
+        model.addAttribute("games",(Page<Game>)  session.getAttribute("games"));
+        model.addAttribute("loginedUser", (User) session.getAttribute("loginedUser"));
+        model.addAttribute("categories",(List<Category>) session.getAttribute("cates"));
+        if(loginFail.trim().length() != 0){
+            model.addAttribute("messFail", "Email or password is invalid!");
         }
-        return "user/general";
-    }*/
+        return "user/views/shop-grid";
+    }
+    @GetMapping("home/login-fail")
+    public String loginHomeFail(ModelMap model, HttpSession session, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("loginFail","Email or password is invalid!");
+        return "redirect:/home/login";
+    }
 
     @GetMapping("register")
     public String register(ModelMap model) {
@@ -50,14 +65,14 @@ public class Security {
         return "user/account/register";
     }
 
-    /*@GetMapping("logout")
+    @GetMapping("logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
-   *//*     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "redirect:/";*//*
-    }*/
+        return "redirect:/";
+    }
 
     @PostMapping(value = "register",produces = "application/x-www-form-urlencoded;charset=UTF-8")
     public String register(User user, @RequestParam("ava") MultipartFile part,@RequestParam("passwordConfirm") String passConfirm, ModelMap model) {
@@ -74,38 +89,24 @@ public class Security {
                     roles.add(role);
                     user.setRoles(roles);
                     userService.save(user);
-                    System.out.println(user);
-
                     //Xu ly copy anh
                     if(!avatarName.equalsIgnoreCase("DEFAULT_AVATAR.png")){
-                        OutputStream outStream = null;
-                        byte[] avatar = null;
-                        outStream = new FileOutputStream(new File(
+                        File ava = new File(
                                 "E:\\OneDrive - Nguyen Sieu School\\Documents\\IntelliJProject\\boardgameshop\\src\\main\\resources\\static\\user\\img\\avatar\\"
-                                        + avatarName));
-                        InputStream userAvatar = part.getInputStream();
-                        avatar = new byte[(int) part.getSize()];
-                        int nRead;
-                        while ((nRead = userAvatar.read(avatar, 0, avatar.length)) != -1) {
-                            outStream.write(avatar, 0, nRead);
-                        }
+                                        + avatarName);
+                        part.transferTo(ava);
                     }
                     model.addAttribute("user", new User());
                     model.addAttribute("messSucc", "Register sucessfully!");
-
                 }else {
                     model.addAttribute("user", new User());
                     model.addAttribute("messFail", "Password comfirm is not correct!");
-
                 }
-
             } else {
                 model.addAttribute("user", new User());
                 model.addAttribute("messFail", "Email is already exist!");
-
             }
             return "user/account/register";
-
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("user", new User());
@@ -113,4 +114,5 @@ public class Security {
             return "user/account/register";
         }
     }
+
 }

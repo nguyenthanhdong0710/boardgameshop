@@ -1,8 +1,6 @@
 package com.vn.bgshop.boardgameshop.repository;
 
 import com.vn.bgshop.boardgameshop.entity.Category;
-import com.vn.bgshop.boardgameshop.entity.Game;
-import com.vn.bgshop.boardgameshop.entity.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -34,7 +32,9 @@ public class CategoryRepoImpl implements CategoryRepo{
 
     @Override
     public Category findById(int id) {
-        return null;
+        String query = "select c from Category c where c.id ='"+id+"'";
+        TypedQuery<Category> categoryTypedQuery = entityManager.createQuery(query, Category.class);
+        return categoryTypedQuery.getResultList().isEmpty()?null:categoryTypedQuery.getResultList().get(0);
     }
 
     @Override

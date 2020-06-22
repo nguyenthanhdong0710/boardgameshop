@@ -1,7 +1,7 @@
+/*
 package com.vn.bgshop.boardgameshop.repository;
 
 import com.vn.bgshop.boardgameshop.entity.Game;
-import com.vn.bgshop.boardgameshop.entity.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -22,6 +22,9 @@ public class GameRepoImpl implements GameRepo{
         return null;
     }
 
+          */
+/*  query.setFirstResult((pageNumber - 1) * pageSize);
+            query.setMaxResults(pageSize);*//*
 
     @Override
     public List<Game> findAll() {
@@ -65,3 +68,4 @@ public class GameRepoImpl implements GameRepo{
 
     }
 }
+*/

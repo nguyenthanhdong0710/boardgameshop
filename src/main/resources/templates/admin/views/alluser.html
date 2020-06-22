@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Admin | Users</title>
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/admin/assets/images/favicon.png}">
+    <!-- CSS Style -->
+    <div th:insert="~{/admin/general::cssStyle}"></div>
+
+</head>
+
+<body>
+
+<div th:insert="~{/admin/general::preloader}"></div>
+
+<div id="main-wrapper">
+    <header th:insert="~{/admin/general::header}"></header>
+
+    <aside th:insert="~{/admin/general::aside}"></aside>
+
+    <div class="page-wrapper">
+
+        <div class="page-breadcrumb">
+            <div class="row">
+                <div class="col-12 d-flex no-block align-items-center">
+                    <h4 class="page-title">Tables</h4>
+                    <div class="ml-auto text-right">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">All user</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Basic Datatable</h5>
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="datatable">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" class="text-center">ID</th>
+                                        <th scope="col" class="text-center">Avatar</th>
+                                        <th scope="col" class="text-center">Fullname</th>
+                                        <th scope="col" class="text-center">Email</th>
+                                        <th scope="col" class="text-center">Phone</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="text-center" th:each="user : ${users}">
+                                        <td class="text-center" th:text="${user.id}"></td>
+                                        <td class="text-center"><img style="width: 70px; height: 70px"
+                                                                     th:src="@{/user/img/avatar/{avatar}(avatar=${user.getAvatar()})}"/>
+                                        </td>
+                                        <td class="text-center" th:text="${user.userName}"></td>
+                                        <td class="text-center" th:text="${user.getEmail()}"></td>
+                                        <td class="text-center" th:text="${user.getPhone()}"></td>
+                                        <td class="text-center">
+                                            <form th:action="@{/admin/remove}" method="post">
+                                                <button class="btn btn-danger" type="submit" th:if="${user.isAdmin()}">
+                                                    Remove admin
+                                                </button>
+                                                <input type="hidden" name="id" th:value="${user.id}">
+                                            </form>
+                                            <form th:action="@{/admin/set}" method="post">
+                                                <button class="btn btn-primary" type="submit"
+                                                        th:if="${!user.isAdmin()}">
+                                                    Set admin
+                                                    <input type="hidden" name="id" th:value="${user.id}">
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer th:insert="~{/admin/general::footer}"></footer>
+
+    </div>
+
+</div>
+
+<!-- JS Plugins -->
+<div th:insert="~{/admin/general::jsPlugins}"></div>
+
+</body>
+
+</html>

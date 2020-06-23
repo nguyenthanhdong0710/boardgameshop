@@ -1,10 +1,6 @@
 package com.vn.bgshop.boardgameshop.entity;
 
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Store;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "games")
-@Indexed
+
 public class Game implements Serializable {
 
     @Id
@@ -21,7 +17,7 @@ public class Game implements Serializable {
     @Column(name = "id")
     private int id;
 
-    @Field(index = Index.YES,analyze=Analyze.NO, store=Store.NO)
+
     @Column(name = "name",columnDefinition = "nvarchar(255)")
     private String name;
 
@@ -43,7 +39,7 @@ public class Game implements Serializable {
     @Column(name = "age_limited")
     private int ageLimited;
 
-    @Field(index=Index.YES, analyze=Analyze.NO, store=Store.NO)
+
     @Column(name = "publisher",columnDefinition = "nvarchar(255)")
     private String publisher;
 

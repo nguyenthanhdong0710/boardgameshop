@@ -71,17 +71,20 @@
                                         <td class="text-center" th:text="${user.userName}"></td>
                                         <td class="text-center" th:text="${user.getEmail()}"></td>
                                         <td class="text-center" th:text="${user.getPhone()}"></td>
+
                                         <td th:if="${not user.isManager()}" class="text-center" th:text="Employee"></td>
                                         <td th:if="${user.isManager()}" class="text-center"><strong>Manager</strong></td>
                                         <td th:if="${#strings.isEmpty(user.getStatus())}" class="text-center" th:text="ACTIVE" style="color: green"></td>
                                         <td th:if="${not #strings.isEmpty(user.getStatus())}" class="text-center" th:text="INACTIVE" style="color: red"></td>
-                                        <td th:if="${not #strings.isEmpty(user.getStatus())}" class="text-center">
-                                            <a class="btn btn-primary" type="submit" th:href="@{/admin/active-user(id=${user.getId()},url='admin')}" style="color: white"> active </a>
+                                        <td th:if="${not #strings.isEmpty(user.getStatus())}" class="text-right">
+                                            <a class="btn btn-primary text-right" type="submit" th:href="@{/admin/active-user(id=${user.getId()},url='admin')}" style="color: white"> active </a>
                                         </td>
-                                        <td th:if="${#strings.isEmpty(user.getStatus())}" class="text-center">
-                                                <a class="btn btn-primary" type="submit" th:href="@{/admin/be-manager(id=${user.getId()})}" style="color: white"> Became Manager </a>
-                                                <a class="btn btn-danger" type="submit" th:href="@{/admin/ban-user(id=${user.getId()},url='admin')}">   inactive </a>
+                                        <td th:if="${#strings.isEmpty(user.getStatus())}" class="text-right">
+                                                <a th:if="${not user.isManager()}" class="btn btn-primary" type="submit" th:href="@{/admin/be-manager(id=${user.getId()})}" style="color: white"> Became Manager </a>
+                                                <a th:if="${user.isManager()}"class="btn btn-cyan" type="submit" th:href="@{/admin/remove-manager(id=${user.getId()})}" style="color: white"> Revoke manager </a>
+                                                <a class="btn btn-danger " type="submit" th:href="@{/admin/ban-user(id=${user.getId()},url='admin')}">   inactive </a>
                                         </td>
+
                                     </tr>
                                     </tbody>
                                 </table>

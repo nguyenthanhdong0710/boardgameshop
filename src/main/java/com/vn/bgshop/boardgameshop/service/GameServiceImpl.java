@@ -2,9 +2,7 @@ package com.vn.bgshop.boardgameshop.service;
 
 import com.vn.bgshop.boardgameshop.entity.Game;
 import com.vn.bgshop.boardgameshop.repository.GameRepo;
-import org.apache.lucene.util.QueryBuilder;
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.Search;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Admin | Games</title>
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/admin/assets/images/favicon.png}">
+    <!-- CSS Style -->
+    <div th:insert="~{/admin/general::cssStyle}"></div>
+</head>
+
+<body>
+<div th:insert="~{/admin/general::preloader}"></div>
+<div id="main-wrapper">
+    <header th:insert="~{/admin/general::header}"></header>
+    <aside th:insert="~{/admin/general::aside}"></aside>
+
+    <div class="page-wrapper">
+        <div class="page-breadcrumb">
+            <div class="row">
+                <div class="col-12 d-flex no-block align-items-center">
+                    <h3 class="page-title">Add admin</h3>
+                    <div class="ml-auto text-right">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Library</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+           <!-- <div class="alert alert-success" role="alert" th:if="${messSucc != null}" th:text="${messSucc}">
+            </div>
+            <div class="alert alert-danger" role="alert" th:if="${messFail != null}" th:text="${messFail}">
+            </div>-->
+            <div class="row justify-content-center">
+                <div class="col-sm-7">
+                    <div class="card">
+                        <form class="form-horizontal" enctype='multipart/form-data' th:action="@{/admin/add-employee}" method="post">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <i class="mdi mdi-24px mdi-gamepad-variant"></i>
+                                    <div class="col-md">
+                                        <input type="text" class="form-control" name="userName" required
+                                               placeholder="full name">
+                                    </div>
+                                    &emsp;&emsp;
+                                    <i class="mdi mdi-24px mdi-garage"></i>
+                                    <div class="col-md">
+                                        <input type="email" class="form-control" placeholder="email" name="publisher"  >
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <i class="mdi mdi-24px mdi-buffer"></i>
+                                    <div class="col-sm">
+                                        <input class="form-control" type="number" min="0" step="1" name="phone number" required
+                                               placeholder="phone number">
+                                    </div>
+                                    &emsp;&emsp;
+                                    <i class="mdi mdi-24px mdi-cash-multiple"></i>  &emsp;&emsp;  &emsp;
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="optradio">Employee
+                                        </label>
+                                    </div>&emsp;&emsp;  &emsp;&emsp;
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="optradio">Manager
+                                        </label>
+                                    </div>&emsp;&emsp;
+                                </div>
+                                <div class="form-group row">
+                                    <i class="mdi mdi-24px mdi-buffer"></i>
+                                    <div class="col-sm">
+                                        <input class="form-control" type="password" min="0" step="1" name="password" required
+                                               placeholder="quantity">
+                                    </div>
+                                    &emsp;&emsp;
+                                    <i class="mdi mdi-24px mdi-cash-multiple"></i>
+                                    <div class="col-sm">
+                                        <input type="password" class="form-control" min="0" step="any" name="price" required
+                                               placeholder="password confirm">
+                                    </div><b class="d-flex align-items-center" style="color: darkgrey"></b>
+                                </div>
+                                <div class="form-group row">
+                                    <i class="mdi mdi-24px mdi-script"></i>
+                                    <div class="col-md">
+                                        <textarea class="form-control" rows="3" name="rules" placeholder="address" ></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <i class="mdi mdi-24px mdi-image"></i>
+                                    <div class="col-md">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" name="img" accept="image/*" required>
+                                            <label class="custom-file-label" style="overflow: hidden">Choose
+                                                avatar...</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="border-top">
+                                    <div class="card-body d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-primary ">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <footer th:insert="~{/admin/general::footer}"></footer>
+    </div>
+</div>
+
+<!-- JS Plugins -->
+<div th:insert="~{/admin/general::jsPlugins}"></div>
+
+
+</body>
+
+</html>

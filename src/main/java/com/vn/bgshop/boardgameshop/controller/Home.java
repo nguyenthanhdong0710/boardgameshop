@@ -71,20 +71,20 @@ public class Home {
             session.setAttribute("loginedUser", loginedUser);
             session.setAttribute("cart", cartDetailService.findByUserId(loginedUser.getId()));
         }
-        if(mess.trim().length() != 0){
+        if (mess.trim().length() != 0) {
             model.addAttribute("mess", mess);
-        }else {
+        } else {
             model.addAttribute("mess", null);
         }
         List<Order> listOrders = orderService.findAll();
-        for(Order order : listOrders){
-            if((new Date().getTime() - order.getSaleDate().getTime()) >= 7*24*60*60*1000){
+        for (Order order : listOrders) {
+            if ((new Date().getTime() - order.getSaleDate().getTime()) >= 7 * 24 * 60 * 60 * 1000) {
                 order.setOrderStatus(orderStatusService.findByStatus("STATUS_FINAL").get());
                 orderService.save(order);
             }
         }
 
-        System.out.println(randomPass(20));;
+        System.out.println(randomPass(20));
         Locale locale = new Locale("en", "UK");
         System.out.println(locale.getLanguage());
         model.addAttribute("category", categoryName);
@@ -95,7 +95,7 @@ public class Home {
     }
 
     @RequestMapping("search")
-    public String search(@RequestParam("key-words") String keyWords,ModelMap model, HttpSession session) {
+    public String search(@RequestParam("key-words") String keyWords, ModelMap model, HttpSession session) {
 
         model.addAttribute("games", (Page<Game>) session.getAttribute("games"));
         model.addAttribute("loginedUser", (User) session.getAttribute("loginedUser"));
@@ -132,18 +132,18 @@ public class Home {
             username = principal.toString();
         }
         User loginedUser = userService.findByEmail(username);
-        if(loginedUser != null){
+        if (loginedUser != null) {
             Set<Role> roles = loginedUser.getRoles();
-            if(roles.contains(roleService.findByName("ROLE_ADMIN_STAFF"))) {
+            if (roles.contains(roleService.findByName("ROLE_ADMIN_STAFF"))) {
                 loginedUser.setAdmin(true);
-            }else {
+            } else {
                 loginedUser.setAdmin(false);
             }
         }
         return loginedUser;
     }
 
-    private String randomPass(int size){
+    private String randomPass(int size) {
         // length is bounded by 256 Character
         byte[] array = new byte[256];
         new Random().nextBytes(array);
@@ -155,7 +155,7 @@ public class Home {
         StringBuffer r = new StringBuffer();
 
         // remove all spacial char
-        String  AlphaNumericString
+        String AlphaNumericString
                 = randomString
                 .replaceAll("[^A-Za-z0-9]", "");
 

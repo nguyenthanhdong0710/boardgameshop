@@ -15,7 +15,8 @@ import java.util.*;
 public class AdminHome {
 
     @RequestMapping("admin")
-    public String admin() {
+    public String admin(ModelMap model, HttpSession session) {
+        model.addAttribute("loginedUser", (User) session.getAttribute("loginedUser"));
         return "admin/views/index";
     }
 

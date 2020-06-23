@@ -171,4 +171,21 @@ public class User implements Serializable {
     public void setManager(boolean manager) {
         isManager = manager;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", address='" + address + '\'' +
+                ", status='" + status + '\'' +
+                ", isAdmin=" + isAdmin +
+                ", isManager=" + isManager +
+                ", roles=" + roles +
+                '}';
+    }
 }

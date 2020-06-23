@@ -38,70 +38,70 @@
         </div>
 
         <div class="container-fluid">
-           <!-- <div class="alert alert-success" role="alert" th:if="${messSucc != null}" th:text="${messSucc}">
+            <div class="alert alert-success" role="alert" th:if="${messSucc != null}" th:text="${messSucc}">
             </div>
             <div class="alert alert-danger" role="alert" th:if="${messFail != null}" th:text="${messFail}">
-            </div>-->
+            </div>
             <div class="row justify-content-center">
                 <div class="col-sm-7">
                     <div class="card">
-                        <form class="form-horizontal" enctype='multipart/form-data' th:action="@{/admin/add-employee}" method="post">
+                        <form class="form-horizontal" enctype='multipart/form-data' th:action="@{/admin/addemployee}" method="post" th:object="${user}">
                             <div class="card-body">
                                 <div class="form-group row">
-                                    <i class="mdi mdi-24px mdi-gamepad-variant"></i>
+                                    <i class="mdi mdi-24px mdi-account"></i>
                                     <div class="col-md">
-                                        <input type="text" class="form-control" name="userName" required
+                                        <input type="text" class="form-control" name="userName" required th:field="*{userName}"
                                                placeholder="full name">
                                     </div>
                                     &emsp;&emsp;
-                                    <i class="mdi mdi-24px mdi-garage"></i>
+                                    <i class="mdi mdi-24px mdi-email"></i>
                                     <div class="col-md">
-                                        <input type="email" class="form-control" placeholder="email" name="publisher"  >
+                                        <input type="email" class="form-control" placeholder="email" name="email" th:field="*{email}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <i class="mdi mdi-24px mdi-buffer"></i>
+                                    <i class="mdi mdi-24px mdi-phone"></i>
                                     <div class="col-sm">
-                                        <input class="form-control" type="number" min="0" step="1" name="phone number" required
+                                        <input class="form-control" type="number" step="1" name="phone" required max="9999999999" th:field="*{phone}"
                                                placeholder="phone number">
                                     </div>
                                     &emsp;&emsp;
-                                    <i class="mdi mdi-24px mdi-cash-multiple"></i>  &emsp;&emsp;  &emsp;
+                                    <i class="mdi mdi-24px mdi-briefcase"></i>  &emsp;&emsp;  &emsp;  &nbsp;&nbsp;
                                     <div class="form-check-inline">
                                         <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optradio">Employee
+                                            <input type="radio" class="form-check-input"  th:value="${false}" th:field="*{manager}">Employee
                                         </label>
                                     </div>&emsp;&emsp;  &emsp;&emsp;
                                     <div class="form-check-inline">
                                         <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optradio">Manager
+                                            <input type="radio" class="form-check-input" th:value="${true}" th:field="*{manager}">Manager
                                         </label>
-                                    </div>&emsp;&emsp;
+                                    </div>&emsp;
                                 </div>
                                 <div class="form-group row">
-                                    <i class="mdi mdi-24px mdi-buffer"></i>
+                                    <i class="mdi mdi-24px mdi-lock"></i>
                                     <div class="col-sm">
-                                        <input class="form-control" type="password" min="0" step="1" name="password" required
+                                        <input class="form-control" type="password" min="0" step="1" name="password" required th:field="*{password}"
                                                placeholder="quantity">
                                     </div>
                                     &emsp;&emsp;
-                                    <i class="mdi mdi-24px mdi-cash-multiple"></i>
+                                    <i class="mdi mdi-24px mdi-lock-outline"></i>
                                     <div class="col-sm">
-                                        <input type="password" class="form-control" min="0" step="any" name="price" required
+                                        <input type="password" class="form-control" min="0" step="any" name="passwordConfirm" required
                                                placeholder="password confirm">
                                     </div><b class="d-flex align-items-center" style="color: darkgrey"></b>
                                 </div>
                                 <div class="form-group row">
-                                    <i class="mdi mdi-24px mdi-script"></i>
+                                    <i class="mdi mdi-24px mdi-google-maps"></i>
                                     <div class="col-md">
-                                        <textarea class="form-control" rows="3" name="rules" placeholder="address" ></textarea>
+                                        <textarea class="form-control" rows="3" name="address" placeholder="address" th:field="*{address}"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <i class="mdi mdi-24px mdi-image"></i>
                                     <div class="col-md">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" name="img" accept="image/*" required>
+                                            <input type="file" class="custom-file-input" name="ava" accept="image/*" required>
                                             <label class="custom-file-label" style="overflow: hidden">Choose
                                                 avatar...</label>
                                         </div>

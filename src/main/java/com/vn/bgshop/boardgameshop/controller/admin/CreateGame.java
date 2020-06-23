@@ -2,6 +2,7 @@ package com.vn.bgshop.boardgameshop.controller.admin;
 
 import com.vn.bgshop.boardgameshop.entity.Category;
 import com.vn.bgshop.boardgameshop.entity.Game;
+import com.vn.bgshop.boardgameshop.entity.User;
 import com.vn.bgshop.boardgameshop.service.CategoryService;
 import com.vn.bgshop.boardgameshop.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,15 +28,16 @@ public class CreateGame {
     private CategoryService categoryService;
 
     @GetMapping("admin/addgame")
-    public String insert(ModelMap model) {
+    public String insert(ModelMap model, HttpSession session) {
         model.addAttribute("game", new Game());
         model.addAttribute("categories",categoryService.findAll());
+        model.addAttribute("loginedUser", (User) session.getAttribute("loginedUser"));
         return "admin/views/insert";
     }
 
 
     @PostMapping("admin/addgame")
-    public String insert(Game game, @RequestParam("img") MultipartFile part, ModelMap model){
+    public String insert(Game game, @RequestParam("img") MultipartFile part, ModelMap model,HttpSession session){
         try {
             String gameImage = part.getOriginalFilename();
             game.setImage(gameImage);
@@ -61,6 +64,7 @@ public class CreateGame {
             model.addAttribute("categories",categoryService.findAll());
             model.addAttribute("messFail","Insert game failed!");
         }
+        model.addAttribute("loginedUser", (User) session.getAttribute("loginedUser"));
         return "admin/views/insert";
     }
 }

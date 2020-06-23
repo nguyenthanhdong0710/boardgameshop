@@ -2,6 +2,7 @@ package com.vn.bgshop.boardgameshop.controller.admin;
 
 import com.vn.bgshop.boardgameshop.entity.Category;
 import com.vn.bgshop.boardgameshop.entity.Game;
+import com.vn.bgshop.boardgameshop.entity.User;
 import com.vn.bgshop.boardgameshop.service.CategoryService;
 import com.vn.bgshop.boardgameshop.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,11 +27,12 @@ public class UpdateGame {
 
 
     @GetMapping("admin/updategame/{id}")
-    public String update(ModelMap model, @PathVariable int id) {
+    public String update(ModelMap model, @PathVariable int id, HttpSession session) {
         Game game = gameService.findById(id).get();
         if(game != null){
             model.addAttribute("game",game );
             model.addAttribute("categories",categoryService.findAll());
+            model.addAttribute("loginedUser", (User) session.getAttribute("loginedUser"));
             return "admin/views/update";
         }else {
             return "admin/views/error-403";
@@ -37,7 +40,7 @@ public class UpdateGame {
     }
 
     @PostMapping("admin/update-game")
-    public String update(Game game , @RequestParam("img") MultipartFile part, ModelMap model){
+    public String update(Game game , @RequestParam("img") MultipartFile part, ModelMap model,HttpSession session){
         try {
             String gameImage = part.getOriginalFilename();
             if (!part.isEmpty()) {
@@ -66,6 +69,7 @@ public class UpdateGame {
             model.addAttribute("game", gameService.findById(game.getId()));
             model.addAttribute("categories",categoryService.findAll());
         }
+        model.addAttribute("loginedUser", (User) session.getAttribute("loginedUser"));
         return "admin/views/update";
     }
 

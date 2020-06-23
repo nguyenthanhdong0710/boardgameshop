@@ -139,6 +139,11 @@ public class Home {
             } else {
                 loginedUser.setAdmin(false);
             }
+            if (roles.contains(roleService.findByName("ROLE_ADMIN_MANAGER"))) {
+                loginedUser.setManager(true);
+            } else {
+                loginedUser.setManager(false);
+            }
         }
         return loginedUser;
     }

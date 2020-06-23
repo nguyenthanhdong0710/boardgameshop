@@ -130,7 +130,7 @@
                     </div>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img th:src="@{/admin/assets/images/users/1.jpg}" alt="user" class="rounded-circle" width="31"></a>
+                    <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img th:src="@{/user/img/avatar/{avatar}(avatar=${loginedUser.getAvatar()})}"  alt="user" class="rounded-circle" width="31"></a>
                     <div class="dropdown-menu dropdown-menu-right user-dd animated">
                         <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
                         <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
@@ -156,8 +156,8 @@
         <nav class="sidebar-nav">
             <ul id="sidebarnav" class="p-t-30">
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard</span></a></li>
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/all-user" aria-expanded="false"><i class="mdi mdi-face"></i><span class="hide-menu">All user</span></a></li>
-                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-face"></i><span class="hide-menu">Employee</span></a>
+                <li th:if="${loginedUser.isManager()}"  class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/all-user" aria-expanded="false"><i class="mdi mdi-face"></i><span class="hide-menu">All user</span></a></li>
+                <li th:if="${loginedUser.isManager()}" class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-face"></i><span class="hide-menu">Employee</span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
                         <li class="sidebar-item"> <a class="sidebar-link " href="/admin/employee" aria-expanded="false"><i class="mdi mdi-border-inside"></i><span class="hide-menu">All employee</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link " href="/admin/add-employee" aria-expanded="false"><i class="mdi mdi-library-plus"></i><span class="hide-menu">Add employee</span></a></li>
@@ -179,7 +179,7 @@
                         <li class="sidebar-item"> <a class="sidebar-link " href="/admin/to-return-order" aria-expanded="false"><i class="mdi mdi-backburger"></i><span class="hide-menu">Return refund order</span></a></li>
                     </ul>
                 </li>
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/charts" aria-expanded="false"><i class="mdi mdi-chart-bar"></i><span class="hide-menu">Charts</span></a></li>
+                <!--<li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/charts" aria-expanded="false"><i class="mdi mdi-chart-bar"></i><span class="hide-menu">Charts</span></a></li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/widgets" aria-expanded="false"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Widgets</span></a></li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/tables" aria-expanded="false"><i class="mdi mdi-border-inside"></i><span class="hide-menu">Tables</span></a></li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/grid" aria-expanded="false"><i class="mdi mdi-blur-linear"></i><span class="hide-menu">Full Width</span></a></li>
@@ -219,7 +219,7 @@
                         <li class="sidebar-item"><a href="error-405.html" class="sidebar-link"><i class="mdi mdi-alert-octagon"></i><span class="hide-menu"> Error 405 </span></a></li>
                         <li class="sidebar-item"><a href="error-500.html" class="sidebar-link"><i class="mdi mdi-alert-octagon"></i><span class="hide-menu"> Error 500 </span></a></li>
                     </ul>
-                </li>
+                </li>-->
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

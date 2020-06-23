@@ -74,7 +74,7 @@ public class Security {
         return "redirect:/";
     }
 
-    @PostMapping(value = "register",produces = "application/x-www-form-urlencoded;charset=UTF-8")
+    @PostMapping(value = "register")
     public String register(User user, @RequestParam("ava") MultipartFile part,@RequestParam("passwordConfirm") String passConfirm, ModelMap model) {
         try {
             if (userService.findByEmail(user.getEmail()) == null) {

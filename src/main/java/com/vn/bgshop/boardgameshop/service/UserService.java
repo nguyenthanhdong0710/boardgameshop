@@ -7,11 +7,15 @@ import java.util.List;
 
 public interface UserService {
 
-    User findByEmail(String email);
-
     List<User> findAll();
 
+    User findByEmail(String email);
+
+    User findByEmailNotBanned(String email);
+
     List<User> findByRole(String roleName);
+
+    List<User> findByRoleSize(int roleSize);
 
     User findById(int id);
 

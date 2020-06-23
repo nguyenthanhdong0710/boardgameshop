@@ -11,11 +11,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -37,14 +35,14 @@ public class UserEdit {
     @Autowired
     private OrderStatusService orderStatusService;
 
-    @Autowired
-    private OrderDetailService orderDetailService;
 
     @Autowired
     private GameService gameService;
 
     @GetMapping("edit-information/{tabName}")
-    public String editInfo(ModelMap model, HttpSession session, @PathVariable String tabName) {
+    public String editInfo(ModelMap model, HttpSession session,
+                           @PathVariable String tabName,
+                           @ModelAttribute("mess") String mess) {
         User user = (User) session.getAttribute("loginedUser");
         OrderStatus completed = orderStatusService.findByStatus("STATUS_RECEIVED").get();
         OrderStatus toPay = orderStatusService.findByStatus("STATUS_WAITING").get();
@@ -63,6 +61,12 @@ public class UserEdit {
         processingOrder.addAll(orderService.findByOrderStatusAndUser(toDelivery,user));
         processingOrder.addAll(orderService.findByOrderStatusAndUser(onDelivery,user));
 
+        if(mess.trim().length() != 0){
+            model.addAttribute("mess", mess);
+        }else {
+            model.addAttribute("mess", null);
+        }
+
         model.addAttribute("tabName", tabName);
         model.addAttribute("loginedUser", user);
         model.addAttribute("historyOrder", historyOrder);
@@ -72,7 +76,7 @@ public class UserEdit {
     }
 
     @PostMapping("change-avatar")
-    public String changeAvatar(User user, @RequestParam("file") MultipartFile part, HttpSession session) {
+    public String changeAvatar(User user, @RequestParam("file") MultipartFile part, HttpSession session, RedirectAttributes redirectAttributes) {
         try {
             User updateUser = userService.findByEmail(user.getEmail());
             String avatar = part.getOriginalFilename();
@@ -85,44 +89,48 @@ public class UserEdit {
             updateUser.setAvatar(avatar);
             userService.update(updateUser.getId(), updateUser);
             session.setAttribute("loginedUser", updateUser);
+            redirectAttributes.addFlashAttribute("mess","Change avatar successfully");
         } catch (Exception e) {
             e.printStackTrace();
+            redirectAttributes.addFlashAttribute("mess","Change avatar unsuccessfully");
         }
         return "redirect:/edit-information/basic-information";
     }
 
     @PostMapping("update-information")
-    public String updateInformation(User user, HttpSession session, String originalEmail) {
+    public String updateInformation(User user, HttpSession session, String originalEmail, RedirectAttributes redirectAttributes) {
         User updateUser = userService.findByEmail(originalEmail);
         updateUser.setUserName(user.getUserName());
         updateUser.setEmail(user.getEmail());
         updateUser.setPhone(user.getPhone());
+        updateUser.setAddress(user.getAddress());
         userService.update(updateUser.getId(), updateUser);
         session.setAttribute("loginedUser", updateUser);
+        redirectAttributes.addFlashAttribute("mess","Update successfully");
         return "redirect:/edit-information/basic-information";
     }
 
     @PostMapping("change-password")
-    public String changePassword(User user, @RequestParam("newPassword") String newPassword, @RequestParam("confirmPassword") String confirmPassword, HttpSession session) {
+    public String changePassword(User user, @RequestParam("newPassword") String newPassword, @RequestParam("confirmPassword") String confirmPassword, HttpSession session,RedirectAttributes redirectAttributes) {
         User updateUser = userService.findByEmail(user.getEmail());
-        System.out.println(123);
-        System.out.println(updateUser);
-        System.out.println(123);
         if (new BCryptPasswordEncoder().matches(user.getPassword(), updateUser.getPassword())) {
             if (newPassword.equals(confirmPassword)) {
                 updateUser.setPassword(newPassword);
                 userService.save(updateUser);
             } else {
-                //Your confirm password is not matches your new password
+                redirectAttributes.addFlashAttribute("mess","Your confirm password is not matches");
+                return "redirect:/edit-information/change-password";
             }
         } else {
-            //Your password is incorect
+            redirectAttributes.addFlashAttribute("mess","Your password is incorrect");
+            return "redirect:/edit-information/change-password";
         }
+        redirectAttributes.addFlashAttribute("mess","Change password successfully");
         return "redirect:/edit-information/change-password";
     }
 
     @GetMapping("/cancel-order")
-    public String cancelOrder(@RequestParam("orderId") int orderId) {
+    public String cancelOrder(@RequestParam("orderId") int orderId, RedirectAttributes redirectAttributes) {
         Order order = orderService.findById(orderId).get();
         OrderStatus cancelled = orderStatusService.findByStatus("STATUS_CANCELLED").get();
         order.setOrderStatus(cancelled);
@@ -136,15 +144,17 @@ public class UserEdit {
             }
         });
         orderService.save(order);
+        redirectAttributes.addFlashAttribute("mess","Cancel successfully");
         return "redirect:/edit-information/processing-order";
     }
 
     @GetMapping("/return-order")
-    public String returnlOrder(@RequestParam("orderId") int orderId) {
+    public String returnlOrder(@RequestParam("orderId") int orderId, RedirectAttributes redirectAttributes) {
         Order order = orderService.findById(orderId).get();
         OrderStatus cancelled = orderStatusService.findByStatus("STATUS_RETURN").get();
         order.setOrderStatus(cancelled);
         orderService.save(order);
+        redirectAttributes.addFlashAttribute("mess","Waiting for admin confirmation");
         return "redirect:/edit-information/oder-history";
     }
 }

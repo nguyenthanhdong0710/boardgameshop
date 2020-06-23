@@ -19,6 +19,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByEmailNotBanned(String email) {
+        return userRepo.findByEmailNotBanned(email);
+    }
+
+    @Override
     public List<User> findAll() {
         return userRepo.findAll();
     }
@@ -26,6 +31,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findByRole(String roleName) {
         return userRepo.findByRole(roleName);
+    }
+
+    @Override
+    public List<User> findByRoleSize(int roleSize) {
+        return userRepo.findByRoleSize(roleSize);
     }
 
     @Override

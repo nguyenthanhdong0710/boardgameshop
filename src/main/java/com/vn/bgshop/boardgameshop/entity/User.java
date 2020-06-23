@@ -29,14 +29,20 @@ public class User implements Serializable {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "avatar",columnDefinition = "nvarchar(255)")
+    @Column(name = "avatar",columnDefinition = "nvarchar(50)")
     private String avatar;
+
+    @Column(name = "address",columnDefinition = "nvarchar(255)")
+    private String address;
 
     @Column(name = "is_del")
     private String status;
 
     @Transient
     private boolean isAdmin;
+
+    @Transient
+    private boolean isManager;
 
     @ManyToMany(cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
     @JoinTable(
@@ -67,13 +73,21 @@ public class User implements Serializable {
         this.orders = orders;
     }
 
+    public String getAddress() {
+        return address;
+    }
 
-    public User(String userName, String email, String password, String phone, String avatar, String status) {
+    public void setAddress(String adress) {
+        this.address = adress;
+    }
+
+    public User(String userName, String email, String password, String phone, String avatar, String address, String status) {
         this.userName = userName;
         this.email = email;
         this.password = password;
         this.phone = phone;
         this.avatar = avatar;
+        this.address = address;
         this.status = status;
     }
 
@@ -150,18 +164,11 @@ public class User implements Serializable {
         isAdmin = admin;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", phone='" + phone + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", status='" + status + '\'' +
-                ", isAdmin=" + isAdmin +
-                ", roles=" + roles +
-                '}';
+    public boolean isManager() {
+        return isManager;
+    }
+
+    public void setManager(boolean manager) {
+        isManager = manager;
     }
 }

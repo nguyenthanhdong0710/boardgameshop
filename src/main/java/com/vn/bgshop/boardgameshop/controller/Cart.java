@@ -78,7 +78,7 @@ public class Cart {
                 cartDetailService.save(cartDetail);
                 session.setAttribute("cart", cartDetailService.findByUserId(user.getId()));
             } else {
-                redirectAttributes.addFlashAttribute("mess", "Sorry, we dont have enough game for you!");
+                redirectAttributes.addFlashAttribute("mess", "Sorry, we dont have enough "+game.getName()+" for you!");
             }
         } else {
             return "redirect:/home/login";
@@ -95,7 +95,7 @@ public class Cart {
             cartDetailService.save(cartDetail);
             session.setAttribute("cart", cartDetailService.findByUserId(user.getId()));
         } else {
-            redirectAttributes.addFlashAttribute("mess", "Sorry, we dont have enough game for you!");
+            redirectAttributes.addFlashAttribute("mess", "Sorry, we dont have enough "+cartDetail.getGame().getName()+" for you!");
         }
         return "redirect:/cart";
     }
@@ -114,6 +114,15 @@ public class Cart {
         double total = 0;
         User user = (User) session.getAttribute("loginedUser");
         List<CartDetail> cartDetails = (List<CartDetail>) session.getAttribute("cart");
+
+        for (CartDetail cartDetail : cartDetails) {
+            game = gameService.findById( cartDetail.getGame().getId()).get();
+            if(cartDetail.getQuantity() > game.getQuantity()){
+                redirectAttributes.addFlashAttribute("mess","Sorry, we dont have enough "+game.getName()+" for you!");
+                return "redirect:/cart";
+            }
+        }
+
         OrderStatus orderStatus = orderStatusService.findByStatus("STATUS_WAITING").get();
         Order order = orderService.saveAndFlush(new Order(user, new Date(), total, orderStatus));
         for (CartDetail cartDetail : cartDetails) {
@@ -132,6 +141,4 @@ public class Cart {
         redirectAttributes.addFlashAttribute("mess","Payment successfully!");
         return "redirect:/cart";
     }
-
-
 }

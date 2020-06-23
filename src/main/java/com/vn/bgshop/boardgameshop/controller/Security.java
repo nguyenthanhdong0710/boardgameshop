@@ -94,7 +94,9 @@ public class Security {
                         File ava = new File(
                                 "E:\\OneDrive - Nguyen Sieu School\\Documents\\IntelliJProject\\boardgameshop\\src\\main\\resources\\static\\user\\img\\avatar\\"
                                         + avatarName);
-                        part.transferTo(ava);
+                        if(!ava.exists()){
+                            part.transferTo(ava);
+                        }
                     }
                     model.addAttribute("user", new User());
                     model.addAttribute("messSucc", "Register sucessfully!");

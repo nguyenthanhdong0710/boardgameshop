@@ -31,8 +31,22 @@ public class UserRepoImpl implements UserRepo {
     }
 
     @Override
+    public User findByEmailNotBanned(String email) {
+        String query = "select u from User u where u.email ='"+email+"' and (u.status is null or u.status = '')";
+        TypedQuery<User> userTypedQuery = entityManager.createQuery(query, User.class);
+        return userTypedQuery.getResultList().isEmpty()?null:userTypedQuery.getResultList().get(0);
+    }
+
+    @Override
     public List<User> findByRole(String roleName) {
         String query = "SELECT u FROM User u JOIN u.roles r WHERE r.name='"+roleName+"'";
+        TypedQuery<User> userTypedQuery = entityManager.createQuery(query, User.class);
+        return userTypedQuery.getResultList();
+    }
+
+    @Override
+    public List<User> findByRoleSize(int size) {
+        String query = "SELECT u FROM User u WHERE u.roles.size = "+size;
         TypedQuery<User> userTypedQuery = entityManager.createQuery(query, User.class);
         return userTypedQuery.getResultList();
     }

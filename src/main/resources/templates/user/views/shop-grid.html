@@ -360,7 +360,7 @@
     </script>
 </div>
 
-<div th:if="${notEnough != null}">
+<div th:if="${mess != null}">
     <script type="text/javascript">
         $(window).on('load',function(){
             $('#notEnough').modal('show');
@@ -370,7 +370,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <h5 th:text="${notEnough}"></h5>
+                    <h5 th:text="${mess}"></h5>
                 </div>
             </div> <!--end modal content-->
         </div>

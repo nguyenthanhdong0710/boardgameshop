@@ -57,6 +57,8 @@
                                         <th scope="col" class="text-center">Fullname</th>
                                         <th scope="col" class="text-center">Email</th>
                                         <th scope="col" class="text-center">Phone</th>
+                                        <th scope="col" class="text-center">Address</th>
+                                        <th scope="col" class="text-center">Status</th>
                                         <th></th>
                                     </tr>
                                     </thead>
@@ -66,23 +68,17 @@
                                         <td class="text-center"><img style="width: 70px; height: 70px"
                                                                      th:src="@{/user/img/avatar/{avatar}(avatar=${user.getAvatar()})}"/>
                                         </td>
-                                        <td class="text-center" th:text="${user.userName}"></td>
+                                        <td class="text-center" th:text="${user.getUserName()}"></td>
                                         <td class="text-center" th:text="${user.getEmail()}"></td>
                                         <td class="text-center" th:text="${user.getPhone()}"></td>
+                                        <td class="text-center"><a data-toggle="modal" th:href="'#'+${user.getId()}">Click here</a></td>
+                                        <td th:if="${#strings.isEmpty(user.getStatus())}" class="text-center" th:text="ACTIVE" style="color: green"></td>
+                                        <td th:if="${not #strings.isEmpty(user.getStatus())}" class="text-center" th:text="BANNED" style="color: red"></td>
                                         <td class="text-center">
-                                            <form th:action="@{/admin/remove}" method="post">
-                                                <button class="btn btn-danger" type="submit" th:if="${user.isAdmin()}">
-                                                    Remove admin
-                                                </button>
-                                                <input type="hidden" name="id" th:value="${user.id}">
-                                            </form>
-                                            <form th:action="@{/admin/set}" method="post">
-                                                <button class="btn btn-primary" type="submit"
-                                                        th:if="${!user.isAdmin()}">
-                                                    Set admin
-                                                    <input type="hidden" name="id" th:value="${user.id}">
-                                                </button>
-                                            </form>
+                                                <a class="btn btn-danger" type="submit" th:href="@{/admin/ban-user(id=${user.id},url='user')}"
+                                                   th:if="${#strings.isEmpty(user.getStatus())}"> BAN </a>
+                                            <a class="btn btn-primary" type="submit" th:href="@{/admin/active-user(id=${user.id},url='user')}"
+                                               th:if="${not #strings.isEmpty(user.getStatus())}"> ACTIVE </a>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -100,6 +96,16 @@
 
     </div>
 
+</div>
+
+<div class="modal fade" th:each="user : ${users}" th:id="${user.getId()}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+               <span th:text="${user.getAddress()}"></span>
+            </div>
+        </div> <!--end modal content-->
+    </div>
 </div>
 
 <!-- JS Plugins -->

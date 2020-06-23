@@ -2,11 +2,8 @@ package com.vn.bgshop.boardgameshop.controller;
 
 import com.vn.bgshop.boardgameshop.entity.*;
 import com.vn.bgshop.boardgameshop.service.*;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.util.QueryBuilder;
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.Search;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,8 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
+import java.nio.charset.Charset;
 import java.util.*;
 
 
@@ -87,6 +84,9 @@ public class Home {
             }
         }
 
+        System.out.println(randomPass(20));;
+        Locale locale = new Locale("en", "UK");
+        System.out.println(locale.getLanguage());
         model.addAttribute("category", categoryName);
         model.addAttribute("games", (Page<Game>) session.getAttribute("games"));
         model.addAttribute("loginedUser", (User) session.getAttribute("loginedUser"));
@@ -141,6 +141,40 @@ public class Home {
             }
         }
         return loginedUser;
+    }
+
+    private String randomPass(int size){
+        // length is bounded by 256 Character
+        byte[] array = new byte[256];
+        new Random().nextBytes(array);
+
+        String randomString
+                = new String(array, Charset.forName("UTF-8"));
+
+        // Create a StringBuffer to store the result
+        StringBuffer r = new StringBuffer();
+
+        // remove all spacial char
+        String  AlphaNumericString
+                = randomString
+                .replaceAll("[^A-Za-z0-9]", "");
+
+        // Append first 20 alphanumeric characters
+        // from the generated random String into the result
+        for (int k = 0; k < AlphaNumericString.length(); k++) {
+
+            if (Character.isLetter(AlphaNumericString.charAt(k))
+                    && (size > 0)
+                    || Character.isDigit(AlphaNumericString.charAt(k))
+                    && (size > 0)) {
+
+                r.append(AlphaNumericString.charAt(k));
+                size--;
+            }
+        }
+
+        // return the resultant string
+        return r.toString();
     }
 
 }

@@ -115,8 +115,4 @@ public class OrderHandle {
         model.addAttribute("orders",orderService.findByOrderStatus(toPay));
         return "admin/views/allorder";
     }
-
-
-
-
 }

@@ -54,28 +54,33 @@
                                     <tr>
                                         <th scope="col" class="text-center">ID</th>
                                         <th scope="col" class="text-center">Avatar</th>
-                                        <th scope="col" class="text-center">Fullname</th>
+                                        <th scope="col" class="text-center">Full name</th>
                                         <th scope="col" class="text-center">Email</th>
                                         <th scope="col" class="text-center">Phone</th>
+                                        <th scope="col" class="text-center">Position</th>
+                                        <th scope="col" class="text-center">Status</th>
                                         <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr class="text-center" th:each="user : ${users}">
-                                        <td class="text-center" th:text="${user.id}"></td>
+                                        <td class="text-center" th:text="${user.getId()}"></td>
                                         <td class="text-center"><img style="width: 70px; height: 70px"
                                                                      th:src="@{/user/img/avatar/{avatar}(avatar=${user.getAvatar()})}"/>
                                         </td>
                                         <td class="text-center" th:text="${user.userName}"></td>
                                         <td class="text-center" th:text="${user.getEmail()}"></td>
                                         <td class="text-center" th:text="${user.getPhone()}"></td>
-                                        <td class="text-center">
-                                                <a class="btn btn-primary" type="submit">
-                                                    Became Manager
-                                                </a>
-                                                <a class="btn btn-danger" type="submit" th:href="@{/admin/remove(id=${user.getId()})}">
-                                                    Remove admin
-                                                </a>
+                                        <td th:if="${not user.isManager()}" class="text-center" th:text="Employee"></td>
+                                        <td th:if="${user.isManager()}" class="text-center"><strong>Manager</strong></td>
+                                        <td th:if="${#strings.isEmpty(user.getStatus())}" class="text-center" th:text="ACTIVE" style="color: green"></td>
+                                        <td th:if="${not #strings.isEmpty(user.getStatus())}" class="text-center" th:text="INACTIVE" style="color: red"></td>
+                                        <td th:if="${not #strings.isEmpty(user.getStatus())}" class="text-center">
+                                            <a class="btn btn-primary" type="submit" th:href="@{/admin/active-user(id=${user.getId()},url='admin')}" style="color: white"> active </a>
+                                        </td>
+                                        <td th:if="${#strings.isEmpty(user.getStatus())}" class="text-center">
+                                                <a class="btn btn-primary" type="submit" th:href="@{/admin/be-manager(id=${user.getId()})}" style="color: white"> Became Manager </a>
+                                                <a class="btn btn-danger" type="submit" th:href="@{/admin/ban-user(id=${user.getId()},url='admin')}">   inactive </a>
                                         </td>
                                     </tr>
                                     </tbody>

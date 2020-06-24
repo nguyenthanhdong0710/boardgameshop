@@ -1,4 +1,5 @@
 package com.vn.bgshop.boardgameshop.repository;
+
 import java.util.List;
 
 public interface Repo<T>  {

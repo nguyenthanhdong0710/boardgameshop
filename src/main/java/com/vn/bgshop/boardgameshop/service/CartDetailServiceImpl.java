@@ -1,12 +1,9 @@
 package com.vn.bgshop.boardgameshop.service;
 
 import com.vn.bgshop.boardgameshop.entity.CartDetail;
-import com.vn.bgshop.boardgameshop.entity.Category;
 import com.vn.bgshop.boardgameshop.repository.CartDetailRepo;
-import com.vn.bgshop.boardgameshop.repository.CategoryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service

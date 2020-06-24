@@ -1,7 +1,6 @@
 package com.vn.bgshop.boardgameshop.service;
 
 import com.vn.bgshop.boardgameshop.entity.OrderDetail;
-
 import java.util.List;
 
 public interface OrderDetailService {

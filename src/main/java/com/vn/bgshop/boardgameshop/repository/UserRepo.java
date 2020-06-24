@@ -1,8 +1,7 @@
 package com.vn.bgshop.boardgameshop.repository;
 
-import com.vn.bgshop.boardgameshop.entity.Role;
-import com.vn.bgshop.boardgameshop.entity.User;
 
+import com.vn.bgshop.boardgameshop.entity.User;
 import java.util.List;
 
 

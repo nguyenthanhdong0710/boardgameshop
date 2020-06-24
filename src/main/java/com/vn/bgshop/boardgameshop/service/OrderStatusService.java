@@ -1,9 +1,7 @@
 package com.vn.bgshop.boardgameshop.service;
 
-import com.vn.bgshop.boardgameshop.entity.CartDetail;
-import com.vn.bgshop.boardgameshop.entity.OrderStatus;
 
-import java.util.List;
+import com.vn.bgshop.boardgameshop.entity.OrderStatus;
 import java.util.Optional;
 
 public interface OrderStatusService {

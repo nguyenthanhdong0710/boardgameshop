@@ -1,15 +1,12 @@
 package com.vn.bgshop.boardgameshop.controller.admin;
 
-import com.vn.bgshop.boardgameshop.entity.Role;
+
 import com.vn.bgshop.boardgameshop.entity.User;
-import com.vn.bgshop.boardgameshop.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpSession;
-import java.util.*;
+
 
 @Controller
 public class AdminHome {

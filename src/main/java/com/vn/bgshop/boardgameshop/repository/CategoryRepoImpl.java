@@ -2,7 +2,6 @@ package com.vn.bgshop.boardgameshop.repository;
 
 import com.vn.bgshop.boardgameshop.entity.Category;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;

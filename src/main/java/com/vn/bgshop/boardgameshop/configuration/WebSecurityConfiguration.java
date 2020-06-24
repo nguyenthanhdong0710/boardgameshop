@@ -14,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.firewall.HttpFirewall;
-import org.springframework.security.web.firewall.StrictHttpFirewall;
+
 
 
 /*
@@ -45,11 +45,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-   /*
-    *** passwordEncoder la mot interface dam nhan viec ma hoa mat khau
-    *** BCryptPasswordEncoder la mot implementation thuc thi no
-    *** BCrypt là thuật toán băm ký tự đạt chuẩn và được khuyên dùng cùng với (SCrypt và 1 cái tên dài dài)
-    */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -62,14 +57,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(this.passwordEncoder());
     }
 
-    /*
-     *** antMatchers(): Khai bao url cua request
-     *** permitAll(): cho phép tất cả các user đều được phép truy cập.
-     *** hasRole(roleName): chỉ cho phép các user có GrantedAuthority là ROLE_roleName mới được phép truy cập
-     *** access("hasAnyRole('roleName','roleName')") : Chi can rolename co trong hasAnyRole la duoc phep truy cap
-     */
+
     protected void configure(HttpSecurity http) throws Exception {
-        //Day la cach viet tat
         http.
                 authorizeRequests()
                     /*.antMatchers("/register","/","home").permitAll()*/

@@ -1,8 +1,5 @@
 package com.vn.bgshop.boardgameshop.entity;
 
-import com.vn.bgshop.boardgameshop.service.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;

@@ -1,7 +1,6 @@
 package com.vn.bgshop.boardgameshop.entity;
 
 import org.springframework.data.annotation.CreatedDate;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;

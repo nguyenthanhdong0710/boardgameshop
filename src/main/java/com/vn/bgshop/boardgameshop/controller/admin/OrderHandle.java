@@ -26,35 +26,94 @@ public class OrderHandle {
     private GameService gameService;
 
     @GetMapping("admin/change-status")
-    public String changeStatus(ModelMap model, @RequestParam("changeStatus") String changeStatus, @RequestParam("id") String orderId,HttpSession session) {
+    public String changeStatus(ModelMap model, HttpSession session,
+                               @RequestParam("changeStatus") String changeStatus,
+                               @RequestParam("id") String orderId,
+                               @RequestParam("cancel") boolean cancel) {
+        model.addAttribute("loginedUser", (User) session.getAttribute("loginedUser"));
+        OrderStatus orderStatus = orderStatusService.findByStatus("STATUS_CANCELLED").get();
+        Order order = orderService.findById(Integer.parseInt(orderId)).get();
+        switch (changeStatus){
+            case "Take order":
+                if(!cancel){
+                    orderStatus = orderStatusService.findByStatus("STATUS_PROCESSING").get();
+                }
+                order.setOrderStatus(orderStatus);
+                orderService.save(order);
+                return "redirect:/admin/to-pay-order";
+            case "On delivery":
+                if(!cancel){
+                    orderStatus = orderStatusService.findByStatus("STATUS_DELIVERING").get();
+                }
+                order.setOrderStatus(orderStatus);
+                orderService.save(order);
+                return "redirect:/admin/to-delivery-order";
+            case "Received":
+                if(!cancel){
+                    orderStatus = orderStatusService.findByStatus("STATUS_RECEIVED").get();
+                }
+                order.setOrderStatus(orderStatus);
+                orderService.save(order);
+                return "redirect:/admin/on-delivery-order";
+            case "Accept return":
+                if(!cancel){
+                    orderStatus = orderStatusService.findByStatus("STATUS_RETURNED").get();
+                }
+                order.setOrderStatus(orderStatus);
+                Set<OrderDetail> orderDetails = order.getOrderDetails();
+                orderDetails.forEach(new Consumer<OrderDetail>() {
+                    @Override
+                    public void accept(OrderDetail orderDetail) {
+                        Game game = orderDetail.getGame();
+                        game.setQuantity(game.getQuantity() + orderDetail.getQuantity());
+                        gameService.save(game);
+                    }
+                });
+                orderService.save(order);
+                return "redirect:/admin/to-return-order";
+            case "Deny":
+                if(!cancel){
+                    orderStatus = orderStatusService.findByStatus("STATUS_FINAL").get();
+                }
+                order.setOrderStatus(orderStatus);
+                orderService.save(order);
+                return "redirect:/admin/to-return-order";
+            default:
+                return "redirect:/admin/all-order";
+        }
+/*
         if(changeStatus.equals("Take order")){
-            Order order = orderService.findById(Integer.parseInt(orderId)).get();
-            OrderStatus orderStatus = orderStatusService.findByStatus("STATUS_PROCESSING").get();
+            if(!cancel){
+                orderStatus = orderStatusService.findByStatus("STATUS_PROCESSING").get();
+            }
             order.setOrderStatus(orderStatus);
             orderService.save(order);
             model.addAttribute("loginedUser", (User) session.getAttribute("loginedUser"));
             return "redirect:/admin/to-pay-order";
         }
         if(changeStatus.equals("On delivery")){
-            Order order = orderService.findById(Integer.parseInt(orderId)).get();
-            OrderStatus orderStatus = orderStatusService.findByStatus("STATUS_DELIVERING").get();
+            if(!cancel){
+                orderStatus = orderStatusService.findByStatus("STATUS_DELIVERING").get();
+            }
             order.setOrderStatus(orderStatus);
             orderService.save(order);
             model.addAttribute("loginedUser", (User) session.getAttribute("loginedUser"));
             return "redirect:/admin/to-delivery-order";
         }
-        if(changeStatus.equals("Complete")){
-            Order order = orderService.findById(Integer.parseInt(orderId)).get();
-            OrderStatus orderStatus = orderStatusService.findByStatus("STATUS_RECEIVED").get();
+        if(changeStatus.equals("Received")){
+            if(!cancel){
+                orderStatus = orderStatusService.findByStatus("STATUS_RECEIVED").get();
+            }
             order.setOrderStatus(orderStatus);
             orderService.save(order);
             model.addAttribute("loginedUser", (User) session.getAttribute("loginedUser"));
             return "redirect:/admin/on-delivery-order";
         }
         if(changeStatus.equals("Accept return")){
-            Order order = orderService.findById(Integer.parseInt(orderId)).get();
-            OrderStatus returned = orderStatusService.findByStatus("STATUS_RETURNED").get();
-            order.setOrderStatus(returned);
+            if(!cancel){
+                orderStatus = orderStatusService.findByStatus("STATUS_RETURNED").get();
+            }
+            order.setOrderStatus(orderStatus);
             Set<OrderDetail> orderDetails = order.getOrderDetails();
             orderDetails.forEach(new Consumer<OrderDetail>() {
                 @Override
@@ -69,17 +128,16 @@ public class OrderHandle {
             return "redirect:/admin/to-return-order";
         }
         if(changeStatus.equals("denied")){
-            Order order = orderService.findById(Integer.parseInt(orderId)).get();
-            OrderStatus orderStatus = orderStatusService.findByStatus("STATUS_FINAL").get();
+            if(!cancel){
+                orderStatus = orderStatusService.findByStatus("STATUS_FINAL").get();
+            }
             order.setOrderStatus(orderStatus);
             orderService.save(order);
             model.addAttribute("loginedUser", (User) session.getAttribute("loginedUser"));
             return "redirect:/admin/to-return-order";
         }
-        model.addAttribute("loginedUser", (User) session.getAttribute("loginedUser"));
-        return "redirect:/admin/all-order";
+        return "redirect:/admin/all-order";*/
     }
-
     @GetMapping("admin/all-order")
     public String allOrder(ModelMap model,HttpSession session) {
         model.addAttribute("orders",orderService.findAll());
@@ -108,7 +166,7 @@ public class OrderHandle {
     @GetMapping("admin/on-delivery-order")
     public String allOnDeliveryOrder(ModelMap model,HttpSession session) {
         OrderStatus toPay = orderStatusService.findByStatus("STATUS_DELIVERING").get();
-        model.addAttribute("changeStatus","Complete");
+        model.addAttribute("changeStatus","Received");
         model.addAttribute("orders",orderService.findByOrderStatus(toPay));
         model.addAttribute("loginedUser", (User) session.getAttribute("loginedUser"));
         return "admin/views/allorder";

@@ -68,8 +68,9 @@
                                         <td class="text-center" th:text="${order.getTotal()}"></td>
                                         <td class="text-center" th:if="${changeStatus == null}" th:text="${order.getOrderStatus().getDecription()}"></td>
                                         <td class="text-center" th:if="${changeStatus != null}">
-                                            <a class="btn btn-cyan" th:href="@{/admin/change-status(changeStatus=${changeStatus},id=${order.getId()})}" th:text="${changeStatus}" style="color: white;"></a>
-                                            <a th:if="${changeStatus == 'Accept return'}" class="btn btn-danger" th:href="@{/admin/change-status(changeStatus='denied',id=${order.getId()})}" th:text="Denied" style="color: white;"></a>
+                                            <a class="btn btn-cyan" th:href="@{/admin/change-status(changeStatus=${changeStatus},id=${order.getId()},cancel=${false})}" th:text="${changeStatus}" style="color: white;"></a>
+                                            <a th:if="${changeStatus == 'Accept return'}" class="btn btn-danger" th:href="@{/admin/change-status(changeStatus='Deny',id=${order.getId()},cancel=${false})}" th:text="Deny" style="color: white;"></a>
+                                            <a th:if="${changeStatus != 'Accept return'}" class="btn btn-danger" th:href="@{/admin/change-status(changeStatus=${changeStatus},id=${order.getId()},cancel=${true})}" th:text="Cancel" style="color: white;"></a>
                                         </td>
                                         <td class="text-center"><a data-toggle="modal" th:href="'#'+${order.getId()}">Show more</a></td>
                                     </tr>
